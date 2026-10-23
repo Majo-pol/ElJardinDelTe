@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Jardín del Té | Bogotá</title>
+    <!-- Conecta con tu archivo de estilos -->
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+    <!-- Encabezado y Menú de Navegación -->
+    <header>
+        <div class="logo-contenedor" id="boton-inicio-logo"> El Jardín del Té</div>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#nosotros">Acerca de Nosotros</a></li>
+                <li><a href="#catalogo">Productos Destacados</a></li>
+                <li><a href="#menu">Menú</a></li>
+                <li><a href="#actividades">Actividades</a></li>
+                <li><a href="#reservas">Contáctanos / Reserva</a></li>
+                <li><a href="#redes">Nuestras Redes</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Portada Principal (Hero) -->
+    <section id="inicio" class="hero-seccion">
+        <h1>El Plan Más Bonito de Bogotá</h1>
+        <p>Ven y disfruta en nuestra mesa de una amplia variedad de Té e infusiones servidos de una forma innovadora, acompañados por exquisitos postres y empanadas horneadas. También ofrecemos Café y Chocolate caliente.</p>
+        <a href="#catalogo" class="boton-primario">Explorar</a>
+    </section>
+
+    <!-- Contenido Principal -->
+    <main class="contenedor-principal">
+        
+        <!-- SECCIÓN ACERCA DE NOSOTROS -->
+        <section id="nosotros" class="seccion-historia seccion-bloque">
+            <div class="historia-texto">
+                <h2 class="seccion-titulo titulo-izquierda">Acerca de Nosotros</h2>
+                <p>En <strong>El Jardín del Té</strong> creemos que cada infusión cuenta una historia. Seleccionamos cuidadosamente botánicos, flores y hebras del mundo para crear experiencias sensoriales únicas en nuestro salón que transforman tu rutina en un ritual de autocuidado y calma.</p>
+
+                <div class="bloque-vision-mision">
+                    <h3>Visión </h3>
+                    <p>Acá se escribe la visión.</p>
+                    <h3>Misión </h3>
+                    <p>Acá se escribe la misión.</p>
+                </div>
+
+                <div class="bloque-como-llegar">
+                    <h2> ¿Cómo llegar?</h2>
+                    <p><strong>📍Dirección:</strong> Bogotá, Colombia (Chapinero). Calle 71 # 11-12</p>
+                    <p><strong>Horario:</strong></p>
+                    <p><strong>Lunes a viernes:</strong> 11:00 AM – 8:00 PM</p>
+                    <p><strong>Sábados y domingos:</strong> 10:00 AM – 7:00 PM</p>
+                    <a href="https://www.google.com/maps/place/El+Jard%C3%ADn+del+T%C3%A9+-+Quinta+Camacho/@4.6566023,-74.0596281,17z/data=!4m7!3m6!1s0x8e3f91671d221c93:0x9432e3e3e0ce7391!8m2!3d4.6566023!4d-74.0596281!10e1!16s%2Fg%2F11ng6lbdtq?entry=ttu&g_ep=EgoyMDI2MTAxOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="boton-mapa">
+                        Google Maps
+                    </a>
+                </div>
+            </div>
+            <img src="" alt="Hojas de té y botánicos" class="historia-imagen">
+        </section>
+
+        <!-- SECCIÓN PRODUCTOS DESTACADOS -->
+        <section id="catalogo" class="seccion-bloque">
+            <h2 class="seccion-titulo">Productos Destacados</h2>
+            <div class="catalogo-grid" id="contenedor-productos"></div>
+        </section>
+
+        <!-- SECCIÓN MENÚ COMPLETO -->
+        <section id="menu" class="seccion-bloque">
+            <h2 class="seccion-titulo">Nuestro Menú en Mesa</h2>
+            <div class="menu-columnas">
+                <div class="menu-categoria">
+                    <h3>Infusiones, Tés y Bebidas</h3>
+                    <ul class="lista-menu">
+                        <li><span>Producto 1</span> <strong>$0</strong></li>
+                        <li><span>Producto 2</span> <strong>$0</strong></li>
+                        <li><span>Producto 3</span> <strong>$0</strong></li>
+                        <li><span>Producto 4</span> <strong>$0</strong></li>
+                    </ul>
+                </div>
+                <div class="menu-categoria">
+                    <h3> Postres y Empanadas Horneadas</h3>
+                    <ul class="lista-menu">
+                        <li><span>Producto 5</span> <strong>$0</strong></li>
+                        <li><span>Producto 6</span> <strong>$0</strong></li>
+                        <li><span>Producto 7</span> <strong>$0</strong></li>
+                        <li><span>Producto 8</span> <strong>$0</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN CALENDARIO DE ACTIVIDADES (Redirecciona a WhatsApp) -->
+        <section id="actividades" class="seccion-bloque">
+            <h2 class="seccion-titulo">Calendario de Actividades</h2>
+            <div class="actividades-grid" id="contenedor-actividades"></div>
+        </section>
+
+        <!-- SECCIÓN CONTÁCTANOS  / RESERVA -->
+        <section id="reservas" class="seccion-bloque">
+            <h2 class="seccion-titulo">Reserva tu Mesa o Contáctanos</h2>
+            <form class="formulario-reserva" id="form-reserva">
+                <input type="text" id="nombre-reserva" placeholder="Tu nombre completo" required>
+                <input type="tel" id="telefono-reserva" placeholder="Teléfono / WhatsApp" required>
+                <input type="date" id="fecha-reserva" required>
+                <select id="personas-reserva" required>
+                    <option value="">Número de personas</option>
+                    <option value="2 personas">2 personas</option>
+                    <option value="3 a 4 personas">3 a 4 personas</option>
+                    <option value="Grupo (5 o más)">Grupo (5 o más)</option>
+                </select>
+                <textarea id="notas-reserva" rows="3" placeholder="¿Alguna solicitud especial o celebración?"></textarea>
+                <button type="submit" class="boton-primario">Confirmar Reserva por WhatsApp</button>
+            </form>
+        </section>
+
+        <!--SECCIÓN NUESTRAS REDES -->
+        <section id="redes" class="seccion-bloque seccion-redes">
+            <h2 class="seccion-titulo">Síguenos en Nuestras Redes</h2>
+            <p>Comparte tu experiencia usando <strong>#ElJardinDelTeBogota</strong></p>
+            <div class="botones-redes">
+                <a href="https://www.instagram.com/el_jardin_del_te/?hl=es" target="_blank" class="boton-red">Instagram</a>
+                <a href="https://tiktok.com" target="_blank" class="boton-red">TikTok</a>
+                <a href="https://wa.me/573115811518" target="_blank" class="boton-red">WhatsApp</a>
+                <a href="https://share.google/7ezLyxmduYvV16g8F" target="_blank" class="boton-red">Reseñas Google</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de página -->
+    <footer>
+        <p>© 2026 El Jardín del Té. Todos los derechos reservados. Creado con pasión.</p>
+    </footer>
+
+    <!-- Notificación Flotante -->
+    <div class="notificacion-flotante" id="notificacion">
+        ¡Redirigiendo a WhatsApp!
+    </div>
+
+    <!-- Conecta con tu archivo de JavaScript -->
+    <script src="logica.js"></script>
+</body>
+</html>
