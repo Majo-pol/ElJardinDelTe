@@ -431,3 +431,65 @@ footer {
     transform: translateY(0);
     opacity: 1;
 }
+
+/* ==========================================
+   ESTILOS DEL CARRUSEL DE FOTOS
+   ========================================== */
+.carrusel-contenedor {
+    position: relative;
+    max-width: 850px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    background-color: white;
+}
+
+.carrusel-track-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.carrusel-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+}
+
+.carrusel-img {
+    min-width: 100%;
+    height: 420px;
+    object-fit: cover;
+}
+
+.carrusel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(27, 48, 34, 0.8);
+    color: var(--color-acento-dorado);
+    border: none;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transicion-suave);
+}
+
+.carrusel-btn:hover {
+    background-color: var(--color-principal-oscuro);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.carrusel-btn.prev {
+    left: 15px;
+}
+
+.carrusel-btn.next {
+    right: 15px;
+}

@@ -202,11 +202,43 @@
             });
         }
     }
+    // CARRUSEL DE FOTOS
+    function iniciarCarrusel() {
+        const track = document.getElementById('carrusel-track');
+        if (!track) return;
+
+        const imagenes = Array.from(track.children);
+        const botonNext = document.getElementById('carrusel-next');
+        const botonPrev = document.getElementById('carrusel-prev');
+        let indiceActual = 0;
+
+        function actualizarPosicionCarrusel() {
+            const anchoImagen = imagenes[0].getBoundingClientRect().width;
+            track.style.transform = 'translateX(-' + (indiceActual * anchoImagen) + 'px)';
+        }
+
+        botonNext.addEventListener('click', function() {
+            indiceActual++;
+            if (indiceActual >= imagenes.length) {
+                indiceActual = 0; // Si llega al final, vuelve a la primera foto
+            }
+            actualizarPosicionCarrusel();
+        });
+
+        botonPrev.addEventListener('click', function() {
+            indiceActual--;
+            if (indiceActual < 0) {
+                indiceActual = imagenes.length - 1; // Si está en la primera, salta a la última
+            }
+            actualizarPosicionCarrusel();
+        });
+    }
 
     // INICIAR LA PÁGINA
     function iniciarPagina() {
         mostrarCatalogoProductos();
         mostrarActividades();
+        iniciarCarrusel();
         activarBotonesDeLaPagina();
     }
 
