@@ -8,7 +8,7 @@
             "type": "chrome",
             "request": "launch",
             "name": "Open index.html",
-            "file": "c:\\Users\\majop\\OneDrive\\Desktop\\ElJardinDelTe\\index.html"
+            "file": "${workspaceFolder}/index.html"
         }
     ]
 }

@@ -1,7 +1,10 @@
 (function () {
     'use strict';
 
-    // Número de WhatsApp de la cafetería (con código 57 de Colombia)
+    // Número de WhatsApp de la cafetería (con código 57 de Colombia).
+    // Va como texto y en un solo sitio: antes estaba escrito a mano en
+    // cada enlace, así que cambiarlo obligaba a buscarlo por todo el
+    // archivo y era fácil dejar uno viejo.
     const NUMERO_WHATSAPP = "573115811518";
 
     // LISTA DE PRODUCTOS DESTACADOS (Solo consumo en el sitio)
@@ -11,21 +14,21 @@
             nombre: "Producto 1",
             descripcion: "Descripción del producto 1.",
             precio: 0,
-            imagenUrl: ""
+            imagenUrl: "imagenes/producto-01.jpg"
         },
         {
             identificador: 2,
             nombre: "Producto 2",
             descripcion: "Descripción del producto 2.",
             precio: 0,
-            imagenUrl: ""
+            imagenUrl: "imagenes/producto-02.jpg"
         },
         {
             identificador: 3,
             nombre: "Producto 3",
             descripcion: "Descripción del producto 3.",
             precio: 0,
-            imagenUrl: ""
+            imagenUrl: "imagenes/producto-03.jpg"
         }
     ];
 
@@ -35,39 +38,56 @@
             identificador: 1,
             titulo: "Actividad 1",
             horario: "Sábados - 4:00 PM",
-            descripcion: "Descripción de la actividad 1."
+            descripcion: "Descripción de la actividad 1.",
+            imagenUrl: "imagenes/actividad-01.jpg"
         },
         {
             identificador: 2,
             titulo: "Actividad 2",
             horario: "Domingos - 3:00 PM",
-            descripcion: "Descripción de la actividad 2."
+            descripcion: "Descripción de la actividad 2.",
+            imagenUrl: "imagenes/actividad-02.jpg"
         },
         {
             identificador: 3,
             titulo: "Actividad 3",
             horario: "Jueves - 6:00 PM",
-            descripcion: "Descripción de la actividad 3."
+            descripcion: "Descripción de la actividad 3.",
+            imagenUrl: "imagenes/actividad-03.jpg"
         }
     ];
+
+    // Arma el enlace de WhatsApp con el mensaje ya codificado.
+    // encodeURIComponent es lo que hace que los acentos, los saltos de
+    // línea y los asteriscos de negrita lleguen bien al chat.
+    function enlaceWhatsApp(mensaje) {
+        return 'https://wa.me/' + NUMERO_WHATSAPP + '?text=' + encodeURIComponent(mensaje);
+    }
 
     // MOSTRAR LOS PRODUCTOS EN LA PANTALLA
     function mostrarCatalogoProductos() {
         const contenedorProductos = document.getElementById('contenedor-productos');
-        
+        if (!contenedorProductos) return;
+
         while (contenedorProductos.firstChild) {
             contenedorProductos.removeChild(contenedorProductos.firstChild);
         }
 
-        inventarioProductos.forEach(function(producto) {
+        inventarioProductos.forEach(function (producto) {
             const tarjetaDiv = document.createElement('div');
             tarjetaDiv.className = 'tarjeta-producto';
-            
-            const imagenTarjeta = document.createElement('img');
-            imagenTarjeta.src = producto.imagenUrl;
-            imagenTarjeta.alt = producto.nombre;
-            imagenTarjeta.className = 'tarjeta-imagen';
-            tarjetaDiv.appendChild(imagenTarjeta);
+
+            // Sólo se crea la etiqueta <img> si de verdad hay una foto.
+            // Un src vacío no muestra nada y algunos navegadores vuelven
+            // a pedir la página entera.
+            if (producto.imagenUrl) {
+                const imagenTarjeta = document.createElement('img');
+                imagenTarjeta.src = producto.imagenUrl;
+                imagenTarjeta.alt = producto.nombre;
+                imagenTarjeta.className = 'tarjeta-imagen';
+                imagenTarjeta.loading = 'lazy';
+                tarjetaDiv.appendChild(imagenTarjeta);
+            }
 
             const contenidoTarjeta = document.createElement('div');
             contenidoTarjeta.className = 'tarjeta-contenido';
@@ -103,14 +123,27 @@
     // MOSTRAR LAS ACTIVIDADES CON SU BOTÓN A WHATSAPP
     function mostrarActividades() {
         const contenedorActividades = document.getElementById('contenedor-actividades');
+        if (!contenedorActividades) return;
 
         while (contenedorActividades.firstChild) {
             contenedorActividades.removeChild(contenedorActividades.firstChild);
         }
 
-        calendarioActividades.forEach(function(actividad) {
+        calendarioActividades.forEach(function (actividad) {
             const tarjeta = document.createElement('div');
             tarjeta.className = 'tarjeta-actividad';
+
+            if (actividad.imagenUrl) {
+                const foto = document.createElement('img');
+                foto.src = actividad.imagenUrl;
+                foto.alt = actividad.titulo;
+                foto.className = 'actividad-imagen';
+                foto.loading = 'lazy';
+                tarjeta.appendChild(foto);
+            }
+
+            const cuerpo = document.createElement('div');
+            cuerpo.className = 'actividad-cuerpo';
 
             const infoDiv = document.createElement('div');
 
@@ -129,43 +162,78 @@
 
             const botonInscribirse = document.createElement('button');
             botonInscribirse.className = 'boton-actividad-wa';
+            botonInscribirse.type = 'button';
             botonInscribirse.setAttribute('data-idactividad', actividad.identificador);
             botonInscribirse.textContent = 'Reservar cupo por WhatsApp';
 
-            tarjeta.appendChild(infoDiv);
-            tarjeta.appendChild(botonInscribirse);
+            cuerpo.appendChild(infoDiv);
+            cuerpo.appendChild(botonInscribirse);
+            tarjeta.appendChild(cuerpo);
             contenedorActividades.appendChild(tarjeta);
         });
     }
 
     function mostrarMensajeFlotante(mensajeTexto) {
         const elementoNotificacion = document.getElementById('notificacion');
+        if (!elementoNotificacion) return;
+
         elementoNotificacion.textContent = mensajeTexto;
         elementoNotificacion.classList.add('visible');
-        setTimeout(function() {
+        setTimeout(function () {
             elementoNotificacion.classList.remove('visible');
         }, 3000);
     }
 
+    // MENÚ HAMBURGUESA (sólo se ve en pantallas angostas)
+    function activarMenuResponsive() {
+        const boton = document.getElementById('menu-boton');
+        const lista = document.getElementById('menu-navegacion');
+        if (!boton || !lista) return;
+
+        function cerrarMenu() {
+            lista.classList.remove('abierto');
+            boton.setAttribute('aria-expanded', 'false');
+            boton.textContent = '☰';
+        }
+
+        boton.addEventListener('click', function () {
+            const abierto = lista.classList.toggle('abierto');
+            boton.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+            boton.textContent = abierto ? '✕' : '☰';
+        });
+
+        // Al tocar un enlace el menú se cierra solo: si no, tapa la
+        // sección a la que el usuario acaba de saltar.
+        lista.addEventListener('click', function (evento) {
+            if (evento.target.tagName === 'A') cerrarMenu();
+        });
+
+        // Si la ventana se agranda hasta el diseño de escritorio, se
+        // limpia el estado para no dejar el menú a medias.
+        window.addEventListener('resize', function () {
+            if (window.innerWidth > 900) cerrarMenu();
+        });
+    }
+
     // ACTIVAR LOS CLICS DE ACTIVIDADES Y RESERVAS
     function activarBotonesDeLaPagina() {
-        document.body.addEventListener('click', function(evento) {
+        document.body.addEventListener('click', function (evento) {
             const objetivo = evento.target;
 
             // Si hacen clic en el botón de una Actividad -> Redirigir a WhatsApp
             if (objetivo.classList.contains('boton-actividad-wa')) {
                 const id = parseInt(objetivo.getAttribute('data-idactividad'), 10);
-                const actividadElegida = calendarioActividades.find(function(a) {
+                const actividadElegida = calendarioActividades.find(function (a) {
                     return a.identificador === id;
                 });
 
                 if (actividadElegida) {
                     mostrarMensajeFlotante('Redirigiendo a WhatsApp para: ' + actividadElegida.titulo);
-                    const mensaje = '¡Hola El Jardín del Té! Me gustaría consultar disponibilidad y reservar cupo para la actividad: *' + actividadElegida.titulo + '* (' + actividadElegida.horario + ').';
-                    const urlWhatsApp = 'https://wa.me/' + 573115811518 + '?text=' + encodeURIComponent(mensaje);
-                    
-                    setTimeout(function() {
-                        window.open(urlWhatsApp, '_blank');
+                    const mensaje = '¡Hola El Jardín del Té! Me gustaría consultar disponibilidad y reservar cupo para la actividad: *' +
+                                    actividadElegida.titulo + '* (' + actividadElegida.horario + ').';
+
+                    setTimeout(function () {
+                        window.open(enlaceWhatsApp(mensaje), '_blank');
                     }, 800);
                 }
             }
@@ -179,15 +247,20 @@
         // Enviar el formulario de Reserva de Mesa a WhatsApp
         const formularioReserva = document.getElementById('form-reserva');
         if (formularioReserva) {
-            formularioReserva.addEventListener('submit', function(evento) {
+            formularioReserva.addEventListener('submit', function (evento) {
                 evento.preventDefault();
+
                 const nombre = document.getElementById('nombre-reserva').value;
+                // El teléfono se pedía en el formulario pero nunca se leía,
+                // así que la reserva llegaba sin forma de devolver la llamada.
+                const telefono = document.getElementById('telefono-reserva').value;
                 const fecha = document.getElementById('fecha-reserva').value;
                 const personas = document.getElementById('personas-reserva').value;
                 const notas = document.getElementById('notas-reserva').value;
 
                 let textoReserva = '¡Hola El Jardín del Té! Quiero reservar una mesa:\n\n' +
                                    '• *Nombre:* ' + nombre + '\n' +
+                                   '• *Teléfono:* ' + telefono + '\n' +
                                    '• *Fecha:* ' + fecha + '\n' +
                                    '• *Personas:* ' + personas;
                 if (notas) {
@@ -195,13 +268,14 @@
                 }
 
                 mostrarMensajeFlotante('¡Abriendo WhatsApp para confirmar tu reserva!');
-                setTimeout(function() {
-                    window.open('https://wa.me/' + 573115811518 + '?text=' + encodeURIComponent(textoReserva), '_blank');
+                setTimeout(function () {
+                    window.open(enlaceWhatsApp(textoReserva), '_blank');
                     formularioReserva.reset();
                 }, 1000);
             });
         }
     }
+
     // CARRUSEL DE FOTOS
     function iniciarCarrusel() {
         const track = document.getElementById('carrusel-track');
@@ -210,6 +284,8 @@
         const imagenes = Array.from(track.children);
         const botonNext = document.getElementById('carrusel-next');
         const botonPrev = document.getElementById('carrusel-prev');
+        if (!imagenes.length || !botonNext || !botonPrev) return;
+
         let indiceActual = 0;
 
         function actualizarPosicionCarrusel() {
@@ -217,7 +293,7 @@
             track.style.transform = 'translateX(-' + (indiceActual * anchoImagen) + 'px)';
         }
 
-        botonNext.addEventListener('click', function() {
+        botonNext.addEventListener('click', function () {
             indiceActual++;
             if (indiceActual >= imagenes.length) {
                 indiceActual = 0; // Si llega al final, vuelve a la primera foto
@@ -225,13 +301,18 @@
             actualizarPosicionCarrusel();
         });
 
-        botonPrev.addEventListener('click', function() {
+        botonPrev.addEventListener('click', function () {
             indiceActual--;
             if (indiceActual < 0) {
                 indiceActual = imagenes.length - 1; // Si está en la primera, salta a la última
             }
             actualizarPosicionCarrusel();
         });
+
+        // La posición se calcula en píxeles a partir del ancho de la foto.
+        // Si la ventana cambia de tamaño ese ancho cambia, así que hay que
+        // volver a calcularla o el carrusel queda desalineado.
+        window.addEventListener('resize', actualizarPosicionCarrusel);
     }
 
     // INICIAR LA PÁGINA
@@ -239,6 +320,7 @@
         mostrarCatalogoProductos();
         mostrarActividades();
         iniciarCarrusel();
+        activarMenuResponsive();
         activarBotonesDeLaPagina();
     }
 

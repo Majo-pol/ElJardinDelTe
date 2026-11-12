@@ -3,7 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>El Jardín del Té | Bogotá</title>
+    <title>El Jardín del Té | Café de experiencia en Bogotá</title>
+    <meta name="description" content="Café de experiencia en Chapinero, Bogotá. Tés e infusiones, brunch, postres y talleres creativos. Reserva tu mesa por WhatsApp.">
+
+    <!-- Tipografías de la marca.
+         Amatic SC es la manuscrita del logotipo y Quicksand la del
+         cuerpo de texto. El preconnect le avisa al navegador que va a
+         necesitar ese servidor, para que abra la conexión antes. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap">
+
     <!-- Conecta con tu archivo de estilos -->
     <link rel="stylesheet" href="estilos.css">
 </head>
@@ -11,9 +21,13 @@
 
     <!-- Encabezado y Menú de Navegación -->
     <header>
-        <div class="logo-contenedor" id="boton-inicio-logo"> El Jardín del Té</div>
+        <div class="logo-contenedor" id="boton-inicio-logo">El Jardín del Té</div>
+
+        <!-- Sólo se ve en pantallas pequeñas. aria-expanded lo actualiza logica.js -->
+        <button class="menu-boton" id="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-navegacion">☰</button>
+
         <nav>
-            <ul>
+            <ul id="menu-navegacion">
                 <li><a href="#inicio">Inicio</a></li>
                 <li><a href="#nosotros">Acerca de Nosotros</a></li>
                 <li><a href="#catalogo">Productos Destacados</a></li>
@@ -34,7 +48,7 @@
 
     <!-- Contenido Principal -->
     <main class="contenedor-principal">
-        
+
         <!-- SECCIÓN ACERCA DE NOSOTROS -->
         <section id="nosotros" class="seccion-historia seccion-bloque">
             <div class="historia-texto">
@@ -42,39 +56,42 @@
                 <p>En <strong>El Jardín del Té</strong> creemos que cada infusión cuenta una historia. Seleccionamos cuidadosamente botánicos, flores y hebras del mundo para crear experiencias sensoriales únicas en nuestro salón que transforman tu rutina en un ritual de autocuidado y calma.</p>
 
                 <div class="bloque-vision-mision">
-                    <h3>Visión </h3>
+                    <h3>Visión</h3>
                     <p>Acá se escribe la visión.</p>
-                    <h3>Misión </h3>
+                    <h3>Misión</h3>
                     <p>Acá se escribe la misión.</p>
                 </div>
 
                 <div class="bloque-como-llegar">
-                    <h2> ¿Cómo llegar?</h2>
-                    <p><strong>📍Dirección:</strong> Bogotá, Colombia (Chapinero). Calle 71 # 11-12</p>
+                    <h2>¿Cómo llegar?</h2>
+                    <p><strong>📍 Dirección:</strong> Bogotá, Colombia (Chapinero). Calle 71 # 11-12</p>
                     <p><strong>Horario:</strong></p>
                     <p><strong>Lunes a viernes:</strong> 11:00 AM – 8:00 PM</p>
                     <p><strong>Sábados y domingos:</strong> 10:00 AM – 7:00 PM</p>
-                    <a href="https://www.google.com/maps/place/El+Jard%C3%ADn+del+T%C3%A9+-+Quinta+Camacho/@4.6566023,-74.0596281,17z/data=!4m7!3m6!1s0x8e3f91671d221c93:0x9432e3e3e0ce7391!8m2!3d4.6566023!4d-74.0596281!10e1!16s%2Fg%2F11ng6lbdtq?entry=ttu&g_ep=EgoyMDI2MTAxOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="boton-mapa">
+                    <a href="https://www.google.com/maps/place/El+Jard%C3%ADn+del+T%C3%A9+-+Quinta+Camacho/@4.6566023,-74.0596281,17z/data=!4m7!3m6!1s0x8e3f91671d221c93:0x9432e3e3e0ce7391!8m2!3d4.6566023!4d-74.0596281!10e1!16s%2Fg%2F11ng6lbdtq?entry=ttu&g_ep=EgoyMDI2MTAxOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="boton-mapa">
                         Google Maps
                     </a>
                 </div>
             </div>
-            <img src="" alt="Hojas de té y botánicos" class="historia-imagen">
+            <img src="imagenes/nosotros-logo.jpg" alt="Logo de El Jardín del Té y letrero de neón sobre el muro verde del salón" class="historia-imagen" loading="lazy">
         </section>
 
         <!-- SECCIÓN GALERÍA / CARRUSEL DE FOTOS -->
         <section id="galeria" class="seccion-bloque">
             <h2 class="seccion-titulo">Conoce Nuestro Salón</h2>
             <div class="carrusel-contenedor">
-                <button class="carrusel-btn prev" id="carrusel-prev">❮</button>
+                <button class="carrusel-btn prev" id="carrusel-prev" aria-label="Foto anterior">❮</button>
                 <div class="carrusel-track-container">
                     <div class="carrusel-track" id="carrusel-track">
-                        <img src="" alt="Ambiente de la cafetería 1" class="carrusel-img">
-                        <img src="" alt="Ambiente de la cafetería 2" class="carrusel-img">
-                        <img src="" alt="Ambiente de la cafetería 3" class="carrusel-img">
+                        <img src="imagenes/salon-01.jpg" alt="Salón con flores colgantes del techo y mesas ocupadas" class="carrusel-img">
+                        <img src="imagenes/salon-02.jpg" alt="Vista del salón hacia la entrada, con el techo florido" class="carrusel-img">
+                        <img src="imagenes/salon-03.jpg" alt="Mesas junto al ventanal con vista a la calle" class="carrusel-img">
+                        <img src="imagenes/salon-04.jpg" alt="Mesa servida con platos para compartir" class="carrusel-img">
+                        <img src="imagenes/salon-05.jpg" alt="Detalle de la decoración artesanal sobre una mesa pintada a mano" class="carrusel-img">
+                        <img src="imagenes/salon-06.jpg" alt="Las flores colgantes iluminadas de noche" class="carrusel-img">
                     </div>
                 </div>
-                <button class="carrusel-btn next" id="carrusel-next">❯</button>
+                <button class="carrusel-btn next" id="carrusel-next" aria-label="Foto siguiente">❯</button>
             </div>
         </section>
 
@@ -98,7 +115,7 @@
                     </ul>
                 </div>
                 <div class="menu-categoria">
-                    <h3> Postres y Empanadas Horneadas</h3>
+                    <h3>Postres y Empanadas Horneadas</h3>
                     <ul class="lista-menu">
                         <li><span>Producto 5</span> <strong>$0</strong></li>
                         <li><span>Producto 6</span> <strong>$0</strong></li>
@@ -115,33 +132,43 @@
             <div class="actividades-grid" id="contenedor-actividades"></div>
         </section>
 
-        <!-- SECCIÓN CONTÁCTANOS  / RESERVA -->
+        <!-- SECCIÓN CONTÁCTANOS / RESERVA -->
         <section id="reservas" class="seccion-bloque">
             <h2 class="seccion-titulo">Reserva tu Mesa o Contáctanos</h2>
             <form class="formulario-reserva" id="form-reserva">
-                <input type="text" id="nombre-reserva" placeholder="Tu nombre completo" required>
-                <input type="tel" id="telefono-reserva" placeholder="Teléfono / WhatsApp" required>
-                <input type="date" id="fecha-reserva" required>
-                <select id="personas-reserva" required>
+                <label for="nombre-reserva">Nombre completo</label>
+                <input type="text" id="nombre-reserva" name="nombre" placeholder="Tu nombre completo" autocomplete="name" required>
+
+                <label for="telefono-reserva">Teléfono / WhatsApp</label>
+                <input type="tel" id="telefono-reserva" name="telefono" placeholder="Ej: 311 581 1518" autocomplete="tel" required>
+
+                <label for="fecha-reserva">Fecha de la reserva</label>
+                <input type="date" id="fecha-reserva" name="fecha" required>
+
+                <label for="personas-reserva">Número de personas</label>
+                <select id="personas-reserva" name="personas" required>
                     <option value="">Número de personas</option>
                     <option value="2 personas">2 personas</option>
                     <option value="3 a 4 personas">3 a 4 personas</option>
                     <option value="Grupo (5 o más)">Grupo (5 o más)</option>
                 </select>
-                <textarea id="notas-reserva" rows="3" placeholder="¿Alguna solicitud especial o celebración?"></textarea>
+
+                <label for="notas-reserva">Solicitudes especiales (opcional)</label>
+                <textarea id="notas-reserva" name="notas" rows="3" placeholder="¿Alguna solicitud especial o celebración?"></textarea>
+
                 <button type="submit" class="boton-primario">Confirmar Reserva por WhatsApp</button>
             </form>
         </section>
 
-        <!--SECCIÓN NUESTRAS REDES -->
+        <!-- SECCIÓN NUESTRAS REDES -->
         <section id="redes" class="seccion-bloque seccion-redes">
             <h2 class="seccion-titulo">Síguenos en Nuestras Redes</h2>
             <p>Comparte tu experiencia usando <strong>#ElJardinDelTeBogota</strong></p>
             <div class="botones-redes">
-                <a href="https://www.instagram.com/el_jardin_del_te/?hl=es" target="_blank" class="boton-red">Instagram</a>
-                <a href="https://tiktok.com" target="_blank" class="boton-red">TikTok</a>
-                <a href="https://wa.me/573115811518" target="_blank" class="boton-red">WhatsApp</a>
-                <a href="https://share.google/7ezLyxmduYvV16g8F" target="_blank" class="boton-red">Reseñas Google</a>
+                <a href="https://www.instagram.com/el_jardin_del_te/?hl=es" target="_blank" rel="noopener" class="boton-red">Instagram</a>
+                <a href="https://tiktok.com" target="_blank" rel="noopener" class="boton-red">TikTok</a>
+                <a href="https://wa.me/573115811518" target="_blank" rel="noopener" class="boton-red">WhatsApp</a>
+                <a href="https://share.google/7ezLyxmduYvV16g8F" target="_blank" rel="noopener" class="boton-red">Reseñas Google</a>
             </div>
         </section>
 
@@ -152,8 +179,9 @@
         <p>© 2026 El Jardín del Té. Todos los derechos reservados. Creado con pasión.</p>
     </footer>
 
-    <!-- Notificación Flotante -->
-    <div class="notificacion-flotante" id="notificacion">
+    <!-- Notificación Flotante.
+         aria-live hace que un lector de pantalla también la anuncie. -->
+    <div class="notificacion-flotante" id="notificacion" role="status" aria-live="polite">
         ¡Redirigiendo a WhatsApp!
     </div>
 
