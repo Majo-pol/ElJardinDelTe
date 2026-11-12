@@ -1,0 +1,760 @@
+/* ==========================================================
+   EL JARDÍN DEL TÉ — HOJA DE ESTILOS
+   ==========================================================
+   La paleta y las tipografías salen del documento de
+   requerimientos de la marca.
+   ========================================================== */
+
+/* TIPOGRAFÍAS DE LA MARCA
+   Amatic SC es la manuscrita condensada que pide el documento para
+   el logotipo. Las otras dos opciones aprobadas son Patrick Hand y
+   The Girl Next Door: para cambiarlas se toca el <link> de index.html
+   y la variable --fuente-titulos de aquí abajo.
+   Quicksand es la de cuerpo de texto: redondeada y legible, va con
+   la personalidad delicada de la marca.
+
+   Las fuentes se cargan desde index.html con <link> y no con @import
+   porque @import frena el dibujado de la página: el navegador tiene
+   que bajar y leer este archivo antes de enterarse de que además
+   necesita las fuentes. */
+
+/* VARIABLES DE COLOR */
+:root {
+    /* Paleta oficial de la marca */
+    --verde-pistacho: #B6CB78;   /* acento, frescura */
+    --rosa-porcelana: #F2E5E2;   /* fondo suave */
+    --terracota:      #D88A76;   /* acento cálido */
+    --dorado:         #F3B947;   /* acento complementario */
+    --marfil:         #FFF9F2;   /* neutro, fondos */
+
+    /* Tonos derivados.
+       El documento no define un color de texto, y los cinco de la
+       marca son todos claros: sobre blanco, la terracota apenas da
+       2.7:1 de contraste y no se puede leer. Así que se derivan dos
+       tonos oscuros de la misma familia:
+         --verde-oscuro    texto y fondos oscuros (11.5:1 sobre marfil)
+         --terracota-fuerte botones con texto blanco (5.3:1) */
+    --verde-oscuro:     #2F3A24;
+    --terracota-fuerte: #A85238;
+    --texto-suave:      #6B6257;
+    --linea-tenue:      #E7DDD4;
+
+    --fuente-titulos: 'Amatic SC', cursive;
+    --fuente-cuerpo:  'Quicksand', 'Segoe UI', Tahoma, sans-serif;
+
+    --transicion-suave: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --sombra-suave: 0 6px 18px rgba(47, 58, 36, 0.07);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--fuente-cuerpo);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--marfil);
+    color: var(--verde-oscuro);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Ninguna imagen se desborda de su contenedor en pantallas pequeñas */
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* Que se vea por dónde va el foco al navegar con el teclado */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid var(--terracota-fuerte);
+    outline-offset: 2px;
+}
+
+/* ENCABEZADO Y MENÚ SUPERIOR */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(255, 249, 242, 0.95);
+    backdrop-filter: blur(10px);
+    color: var(--verde-oscuro);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 5%;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(47, 58, 36, 0.08);
+    gap: 15px;
+}
+
+.logo-contenedor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--fuente-titulos);
+    font-size: 2.1rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--verde-oscuro);
+    cursor: pointer;
+    white-space: nowrap;
+    line-height: 1.1;
+}
+
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    gap: 20px;
+    justify-content: flex-end;
+}
+
+nav ul li a {
+    color: var(--verde-oscuro);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    transition: var(--transicion-suave);
+}
+
+nav ul li a:hover {
+    color: var(--terracota-fuerte);
+}
+
+/* Botón hamburguesa: sólo aparece en pantallas pequeñas */
+.menu-boton {
+    display: none;
+    background: none;
+    border: 2px solid var(--verde-oscuro);
+    border-radius: 8px;
+    color: var(--verde-oscuro);
+    font-size: 1.5rem;
+    line-height: 1;
+    padding: 4px 10px;
+    cursor: pointer;
+}
+
+/* PORTADA PRINCIPAL (HERO) */
+.hero-seccion {
+    min-height: 88vh;
+    /* La foto de fondo y su capa de color las pone Portada.jsx, que
+       importa la imagen para que Vite la resuelva al compilar.
+       Aquí sólo queda cómo se coloca. */
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--marfil);
+    padding: 90px 20px 60px;
+}
+
+.hero-seccion h1 {
+    font-family: var(--fuente-titulos);
+    font-size: clamp(3rem, 9vw, 5.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    margin-bottom: 18px;
+    color: var(--dorado);
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.hero-seccion p {
+    font-size: clamp(1rem, 2.2vw, 1.2rem);
+    max-width: 620px;
+    margin-bottom: 30px;
+}
+
+.boton-primario {
+    display: inline-block;
+    background-color: var(--terracota-fuerte);
+    color: #FFFFFF;
+    padding: 13px 34px;
+    border: none;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transicion-suave);
+    text-decoration: none;
+}
+
+.boton-primario:hover {
+    background-color: var(--terracota);
+    color: var(--verde-oscuro);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(47, 58, 36, 0.2);
+}
+
+/* SECCIONES GENERALES */
+.contenedor-principal {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+}
+
+.seccion-bloque {
+    margin-top: 80px;
+    scroll-margin-top: 90px;
+}
+
+.seccion-titulo {
+    font-family: var(--fuente-titulos);
+    text-align: center;
+    font-size: clamp(2.4rem, 5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--verde-oscuro);
+    margin-bottom: 45px;
+    position: relative;
+}
+
+.seccion-titulo::after {
+    content: '';
+    display: block;
+    width: 70px;
+    height: 3px;
+    background-color: var(--terracota);
+    border-radius: 3px;
+    margin: 12px auto 0;
+}
+
+.seccion-titulo.titulo-izquierda {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.seccion-titulo.titulo-izquierda::after {
+    margin: 10px 0 0;
+}
+
+/* CATÁLOGO DE PRODUCTOS */
+.catalogo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+}
+
+.tarjeta-producto {
+    background: #FFFFFF;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--sombra-suave);
+    transition: var(--transicion-suave);
+    display: flex;
+    flex-direction: column;
+}
+
+.tarjeta-producto:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(47, 58, 36, 0.13);
+}
+
+.tarjeta-imagen {
+    height: 210px;
+    width: 100%;
+    object-fit: cover;
+    background-color: var(--rosa-porcelana);
+}
+
+.tarjeta-contenido {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.tarjeta-contenido h3 {
+    color: var(--verde-oscuro);
+    margin-bottom: 10px;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.tarjeta-contenido p {
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+}
+
+.precio-y-accion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--linea-tenue);
+    padding-top: 12px;
+}
+
+.precio {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--terracota-fuerte);
+}
+
+.etiqueta-sitio {
+    font-size: 0.82rem;
+    background-color: var(--verde-pistacho);
+    color: var(--verde-oscuro);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+/* ACERCA DE NOSOTROS, MENÚ Y ACTIVIDADES */
+.seccion-historia {
+    background-color: var(--rosa-porcelana);
+    padding: 55px 45px;
+    border-radius: 18px;
+    box-shadow: var(--sombra-suave);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    align-items: center;
+}
+
+.historia-texto {
+    flex: 1;
+    min-width: 280px;
+}
+
+.historia-texto p {
+    margin-bottom: 12px;
+}
+
+.historia-texto h3 {
+    font-size: 1.15rem;
+    color: var(--terracota-fuerte);
+    margin-top: 16px;
+}
+
+.bloque-como-llegar h2 {
+    font-family: var(--fuente-titulos);
+    font-size: 2rem;
+    margin: 26px 0 10px;
+    color: var(--verde-oscuro);
+}
+
+.historia-imagen {
+    flex: 1;
+    min-width: 280px;
+    height: 360px;
+    border-radius: 14px;
+    object-fit: cover;
+}
+
+.boton-mapa {
+    display: inline-block;
+    margin-top: 15px;
+    background-color: var(--verde-oscuro);
+    color: var(--marfil);
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    transition: var(--transicion-suave);
+}
+
+.boton-mapa:hover {
+    background-color: var(--terracota-fuerte);
+    color: #FFFFFF;
+}
+
+.menu-columnas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+}
+
+.menu-categoria {
+    background: #FFFFFF;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: var(--sombra-suave);
+}
+
+.menu-categoria h3 {
+    color: var(--verde-oscuro);
+    border-bottom: 2px solid var(--verde-pistacho);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.lista-menu {
+    list-style: none;
+}
+
+.lista-menu li {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--linea-tenue);
+}
+
+.lista-menu li strong {
+    color: var(--terracota-fuerte);
+    white-space: nowrap;
+}
+
+/* Tarjetas de Actividades con botón a WhatsApp */
+.actividades-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+.tarjeta-actividad {
+    background: #FFFFFF;
+    border-radius: 14px;
+    border-left: 5px solid var(--verde-pistacho);
+    box-shadow: var(--sombra-suave);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 15px;
+    overflow: hidden;
+}
+
+.actividad-imagen {
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+    background-color: var(--rosa-porcelana);
+}
+
+.actividad-cuerpo {
+    padding: 0 22px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+    justify-content: space-between;
+}
+
+.fecha-evento {
+    display: inline-block;
+    background: var(--dorado);
+    color: var(--verde-oscuro);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.tarjeta-actividad h3 {
+    font-size: 1.2rem;
+    color: var(--verde-oscuro);
+}
+
+.tarjeta-actividad p {
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+}
+
+.boton-actividad-wa {
+    background-color: var(--verde-oscuro);
+    color: #FFFFFF;
+    border: none;
+    padding: 11px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transicion-suave);
+    width: 100%;
+    font-size: 0.95rem;
+}
+
+.boton-actividad-wa:hover {
+    background-color: #1B7D45; /* verde de WhatsApp, oscurecido para que el texto blanco se lea */
+    transform: translateY(-2px);
+}
+
+/* RESERVAS, REDES SOCIALES Y NOTIFICACIÓN */
+.formulario-reserva {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    padding: 35px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: var(--sombra-suave);
+}
+
+.formulario-reserva label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--verde-oscuro);
+    margin-bottom: -8px;
+}
+
+.formulario-reserva input,
+.formulario-reserva select,
+.formulario-reserva textarea {
+    padding: 12px;
+    border: 1px solid var(--linea-tenue);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: var(--marfil);
+    color: var(--verde-oscuro);
+}
+
+.formulario-reserva input::placeholder,
+.formulario-reserva textarea::placeholder {
+    color: var(--texto-suave);
+}
+
+.seccion-redes {
+    text-align: center;
+    background-color: var(--rosa-porcelana);
+    padding: 50px 30px;
+    border-radius: 18px;
+}
+
+.botones-redes {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.boton-red {
+    background-color: var(--verde-oscuro);
+    color: var(--marfil);
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-weight: 700;
+    transition: var(--transicion-suave);
+}
+
+.boton-red:hover {
+    background-color: var(--terracota-fuerte);
+    color: #FFFFFF;
+    transform: translateY(-3px);
+}
+
+footer {
+    background-color: var(--verde-oscuro);
+    color: var(--marfil);
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 80px;
+}
+
+.notificacion-flotante {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--verde-oscuro);
+    color: var(--dorado);
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    font-weight: 700;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: var(--transicion-suave);
+    z-index: 2000;
+    max-width: calc(100% - 40px);
+}
+
+.notificacion-flotante.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* ==========================================
+   CARRUSEL DE FOTOS
+   ========================================== */
+.carrusel-contenedor {
+    position: relative;
+    max-width: 850px;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 18px;
+    box-shadow: var(--sombra-suave);
+    background-color: #FFFFFF;
+}
+
+.carrusel-track-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.carrusel-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    width: 100%;
+}
+
+.carrusel-img {
+    min-width: 100%;
+    height: 440px;
+    object-fit: cover;
+}
+
+.carrusel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(47, 58, 36, 0.78);
+    color: var(--dorado);
+    border: none;
+    width: 46px;
+    height: 46px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transicion-suave);
+}
+
+.carrusel-btn:hover {
+    background-color: var(--verde-oscuro);
+    transform: translateY(-50%) scale(1.06);
+}
+
+.carrusel-btn.prev { left: 15px; }
+.carrusel-btn.next { right: 15px; }
+
+/* ==========================================
+   RESPONSIVE
+   El menú tiene siete enlaces: en pantallas angostas no caben al
+   lado del logo, así que por debajo de 900px se guardan detrás del
+   botón hamburguesa.
+   ========================================== */
+@media (max-width: 900px) {
+    .menu-boton {
+        display: block;
+    }
+
+    header {
+        flex-wrap: wrap;
+    }
+
+    nav {
+        width: 100%;
+    }
+
+    nav ul {
+        display: none;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+        padding: 10px 0 6px;
+    }
+
+    /* La clase la pone y la quita logica.js al tocar el botón */
+    nav ul.abierto {
+        display: flex;
+    }
+
+    nav ul li {
+        width: 100%;
+        border-top: 1px solid var(--linea-tenue);
+    }
+
+    nav ul li a {
+        display: block;
+        width: 100%;
+        padding: 12px 4px;
+        font-size: 1rem;
+    }
+
+    .seccion-historia {
+        padding: 35px 25px;
+    }
+
+    .historia-imagen {
+        height: 280px;
+    }
+
+    .carrusel-img {
+        height: 320px;
+    }
+}
+
+@media (max-width: 600px) {
+    .contenedor-principal {
+        padding: 20px 16px 50px;
+    }
+
+    .seccion-bloque {
+        margin-top: 55px;
+    }
+
+    .logo-contenedor {
+        font-size: 1.8rem;
+    }
+
+    .hero-seccion {
+        min-height: 78vh;
+        padding: 100px 18px 50px;
+    }
+
+    .formulario-reserva {
+        padding: 24px 18px;
+    }
+
+    .seccion-redes {
+        padding: 35px 18px;
+    }
+
+    .carrusel-img {
+        height: 240px;
+    }
+
+    .carrusel-btn {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+
+    .carrusel-btn.prev { left: 8px; }
+    .carrusel-btn.next { right: 8px; }
+
+    .notificacion-flotante {
+        left: 20px;
+        right: 20px;
+        text-align: center;
+    }
+}
+
+/* Respeta a quien pidió menos animación en su sistema */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    .carrusel-track {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
