@@ -757,3 +757,34 @@ footer {
         animation-duration: 0.01ms !important;
     }
 }
+
+/* Selector de bebida y tamaño en el menú de mesa*/
+.lista-menu li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 15px; /* Da un poco de respiro entre bebidas */
+}
+
+.lista-menu li span {
+    min-width: 70px; /* Evita que "Té Rojo" se parta en dos líneas */
+}
+
+.selector-tamano {
+    flex: 1; /* Permite que el selector crezca o se encoja de forma flexible */
+    max-width: 150px; /* Evita que sea demasiado ancho en pantallas grandes */
+    padding: 5px;
+    font-size: 0.85rem;
+    text-overflow: ellipsis;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.lista-menu li strong {
+    white-space: nowrap; /* Impide que el precio se separe (ej. que el $ quede arriba y el número abajo) */
+    min-width: 65px;
+    text-align: right;
+}

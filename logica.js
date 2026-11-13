@@ -11,22 +11,22 @@
     const inventarioProductos = [
         {
             identificador: 1,
-            nombre: "Producto 1",
-            descripcion: "Descripción del producto 1.",
+            nombre: "Chocolate Especial con Tostada Francesa",
+            descripcion: "Delicioso chocolate caliente con una tostada francesa.",
             precio: 0,
             imagenUrl: "imagenes/producto-01.jpg"
         },
         {
             identificador: 2,
-            nombre: "Producto 2",
-            descripcion: "Descripción del producto 2.",
+            nombre: "Capuccino con Tostada Italiana",
+            descripcion: "Delicioso capuccino caliente con una tostada italiana.",
             precio: 0,
             imagenUrl: "imagenes/producto-02.jpg"
         },
         {
             identificador: 3,
-            nombre: "Producto 3",
-            descripcion: "Descripción del producto 3.",
+            nombre: "Latte con Tostada Francesa",
+            descripcion: "Delicioso latte caliente con una tostada francesa.",
             precio: 0,
             imagenUrl: "imagenes/producto-03.jpg"
         }
@@ -36,23 +36,23 @@
     const calendarioActividades = [
         {
             identificador: 1,
-            titulo: "Actividad 1",
-            horario: "Sábados - 4:00 PM",
-            descripcion: "Descripción de la actividad 1.",
+            titulo: "Pinta & Crea",
+            horario: "Por definir",
+            descripcion: "Puedes seleccionar entre ceramicas, lienzos y tote bags. Puedes escoger este plan con o sin brunch. Cupos limitados, reserva con anticipación.",
             imagenUrl: "imagenes/actividad-01.jpg"
         },
         {
             identificador: 2,
-            titulo: "Actividad 2",
-            horario: "Domingos - 3:00 PM",
-            descripcion: "Descripción de la actividad 2.",
+            titulo: "Brunch astrológico",
+            horario: "Por definir",
+            descripcion: "Disfruta de un brunch con un toque astrológico. Prepárate con la energía de cada mes y no te dejes sorprender por los astros. Cupos limitados, reserva con anticipación.",
             imagenUrl: "imagenes/actividad-02.jpg"
         },
         {
             identificador: 3,
-            titulo: "Actividad 3",
-            horario: "Jueves - 6:00 PM",
-            descripcion: "Descripción de la actividad 3.",
+            titulo: "Decora & disfruta",
+            horario: "Por definir",
+            descripcion: "Disfruta de un taller de decoración Diseña tu propia torta y disfruta una experiencia deliciosa y creativa. Puedes escoger este plan con o sin brunch. Cupos limitados, reserva con anticipación.",
             imagenUrl: "imagenes/actividad-03.jpg"
         }
     ];
@@ -230,7 +230,7 @@
                 if (actividadElegida) {
                     mostrarMensajeFlotante('Redirigiendo a WhatsApp para: ' + actividadElegida.titulo);
                     const mensaje = '¡Hola El Jardín del Té! Me gustaría consultar disponibilidad y reservar cupo para la actividad: *' +
-                                    actividadElegida.titulo + '* (' + actividadElegida.horario + ').';
+                        actividadElegida.titulo + '* (' + actividadElegida.horario + ').';
 
                     setTimeout(function () {
                         window.open(enlaceWhatsApp(mensaje), '_blank');
@@ -259,10 +259,10 @@
                 const notas = document.getElementById('notas-reserva').value;
 
                 let textoReserva = '¡Hola El Jardín del Té! Quiero reservar una mesa:\n\n' +
-                                   '• *Nombre:* ' + nombre + '\n' +
-                                   '• *Teléfono:* ' + telefono + '\n' +
-                                   '• *Fecha:* ' + fecha + '\n' +
-                                   '• *Personas:* ' + personas;
+                    '• *Nombre:* ' + nombre + '\n' +
+                    '• *Teléfono:* ' + telefono + '\n' +
+                    '• *Fecha:* ' + fecha + '\n' +
+                    '• *Personas:* ' + personas;
                 if (notas) {
                     textoReserva += '\n• *Notas:* ' + notas;
                 }
@@ -326,3 +326,27 @@
 
     document.addEventListener('DOMContentLoaded', iniciarPagina);
 })();
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Seleccionamos todos los desplegables
+    const selectoresTamano = document.querySelectorAll('.selector-tamano');
+
+    selectoresTamano.forEach(selector => {
+        selector.addEventListener('change', function () {
+            const nuevoPrecio = this.value;
+
+            // Buscamos el elemento de la lista (li) que contiene este selector
+            const contenedorBebida = this.closest('li');
+
+            if (contenedorBebida) {
+                // Buscamos la etiqueta strong dentro de ese mismo li
+                const precioElemento = contenedorBebida.querySelector('strong');
+
+                if (precioElemento) {
+                    // Actualizamos el precio con el formato correcto
+                    precioElemento.textContent = '$' + Number(nuevoPrecio).toLocaleString('es-CO');
+                }
+            }
+        });
+    });
+});
