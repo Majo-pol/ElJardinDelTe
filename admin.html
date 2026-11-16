@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador | El Jardín del Té</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-contenedor" id="boton-inicio-logo">El Jardín del Té — Admin</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Volver al Sitio Web</a></li>
+                <li><a href="#" id="btn-cerrar-sesion" style="display: none;">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="contenedor-principal">
+        <!-- 1. PANTALLA DE LOGIN -->
+        <section id="seccion-login" class="seccion-bloque">
+            <h2 class="seccion-titulo">Ingreso Administradores</h2>
+            <form class="formulario-reserva" id="form-login-admin">
+                <label for="email-admin">Correo electrónico</label>
+                <input type="email" id="email-admin" placeholder="admin@eljardindelte.com" required>
+
+                <label for="password-admin">Contraseña</label>
+                <input type="password" id="password-admin" placeholder="••••••••" required>
+
+                <button type="submit" class="boton-primario">Iniciar Sesión</button>
+                <p id="error-login" style="color: #A85238; font-weight: 700; text-align: center;"></p>
+            </form>
+        </section>
+
+        <!-- 2. PANEL DE GESTIÓN (Visible tras iniciar sesión) -->
+        <section id="seccion-panel" class="seccion-bloque" style="display: none;">
+            <h2 class="seccion-titulo">Panel de Contenidos</h2>
+
+            <div class="menu-columnas">
+                <!-- Columna 1: Gestionar Productos Destacados -->
+                <div class="menu-categoria">
+                    <h3>Agregar Producto Destacado</h3>
+                    <form id="form-nuevo-producto" class="formulario-reserva" style="padding: 10px 0; box-shadow: none;">
+                        <label>Nombre del plato / bebida</label>
+                        <input type="text" id="prod-nombre" required placeholder="Ej: Matcha con Waffle">
+
+                        <label>Descripción</label>
+                        <textarea id="prod-desc" rows="2" required placeholder="Descripción breve"></textarea>
+
+                        <label>Precio (COP)</label>
+                        <input type="number" id="prod-precio" required placeholder="Ej: 32000">
+
+                        <label>Ruta o URL de la foto</label>
+                        <input type="text" id="prod-img" required placeholder="imagenes/producto-01.jpg o https://...">
+
+                        <button type="submit" class="boton-primario">Guardar Producto</button>
+                    </form>
+
+                    <h3 style="margin-top: 25px;">Productos Actuales</h3>
+                    <ul class="lista-menu" id="lista-admin-productos"></ul>
+                </div>
+
+                <!-- Columna 2: Gestionar Calendario de Actividades -->
+                <div class="menu-categoria">
+                    <h3>Agregar Actividad / Taller</h3>
+                    <form id="form-nueva-actividad" class="formulario-reserva" style="padding: 10px 0; box-shadow: none;">
+                        <label>Título de la actividad</label>
+                        <input type="text" id="act-titulo" required placeholder="Ej: Taller de Kintsugi">
+
+                        <label>Fecha / Horario</label>
+                        <input type="text" id="act-horario" required placeholder="Ej: Sábado 28 Nov - 3:00 PM">
+
+                        <label>Descripción</label>
+                        <textarea id="act-desc" rows="2" required placeholder="Detalles del taller"></textarea>
+
+                        <label>Ruta o URL de la foto</label>
+                        <input type="text" id="act-img" required placeholder="imagenes/actividad-01.jpg o https://...">
+
+                        <button type="submit" class="boton-primario">Guardar Actividad</button>
+                    </form>
+
+                    <h3 style="margin-top: 25px;">Actividades Actuales</h3>
+                    <ul class="lista-menu" id="lista-admin-actividades"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="notificacion-flotante" id="notificacion" role="status" aria-live="polite"></div>
+
+    <script src="conexion.js"></script>
+    <script>
+        (function () {
+            'use strict';
+
+            const seccionLogin = document.getElementById('seccion-login');
+            const seccionPanel = document.getElementById('seccion-panel');
+            const btnCerrar = document.getElementById('btn-cerrar-sesion');
+            const errorLogin = document.getElementById('error-login');
+
+            function notificar(texto) {
+                const n = document.getElementById('notificacion');
+                n.textContent = texto;
+                n.classList.add('visible');
+                setTimeout(function () { n.classList.remove('visible'); }, 3000);
+            }
+
+            // Cargar listas en el panel para poder borrar elementos si el dueño quiere
+            async function cargarListasAdmin() {
+                const listaProd = document.getElementById('lista-admin-productos');
+                const listaAct = document.getElementById('lista-admin-actividades');
+                listaProd.textContent = '';
+                listaAct.textContent = '';
+
+                const { data: prods } = await clienteSupabase.from('productos').select('*').order('id');
+                if (prods) {
+                    prods.forEach(function (p) {
+                        const li = document.createElement('li');
+                        const span = document.createElement('span');
+                        span.textContent = p.nombre + ' ($' + Number(p.precio).toLocaleString('es-CO') + ')';
+                        const btn = document.createElement('button');
+                        btn.textContent = 'Eliminar';
+                        btn.className = 'etiqueta-sitio';
+                        btn.style.cursor = 'pointer';
+                        btn.style.border = 'none';
+                        btn.onclick = async function () {
+                            await clienteSupabase.from('productos').delete().eq('id', p.id);
+                            notificar('Producto eliminado');
+                            cargarListasAdmin();
+                        };
+                        li.appendChild(span);
+                        li.appendChild(btn);
+                        listaProd.appendChild(li);
+                    });
+                }
+
+                const { data: acts } = await clienteSupabase.from('actividades').select('*').order('id');
+                if (acts) {
+                    acts.forEach(function (a) {
+                        const li = document.createElement('li');
+                        const span = document.createElement('span');
+                        span.textContent = a.titulo + ' (' + a.horario + ')';
+                        const btn = document.createElement('button');
+                        btn.textContent = 'Eliminar';
+                        btn.className = 'etiqueta-sitio';
+                        btn.style.cursor = 'pointer';
+                        btn.style.border = 'none';
+                        btn.onclick = async function () {
+                            await clienteSupabase.from('actividades').delete().eq('id', a.id);
+                            notificar('Actividad eliminada');
+                            cargarListasAdmin();
+                        };
+                        li.appendChild(span);
+                        li.appendChild(btn);
+                        listaAct.appendChild(li);
+                    });
+                }
+            }
+
+            // Login con Supabase
+            document.getElementById('form-login-admin').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                errorLogin.textContent = '';
+                const email = document.getElementById('email-admin').value;
+                const password = document.getElementById('password-admin').value;
+
+                const { error } = await clienteSupabase.auth.signInWithPassword({ email, password });
+                if (error) {
+                    errorLogin.textContent = 'Correo o contraseña incorrectos.';
+                } else {
+                    seccionLogin.style.display = 'none';
+                    seccionPanel.style.display = 'block';
+                    btnCerrar.style.display = 'inline';
+                    cargarListasAdmin();
+                }
+            });
+
+            // Guardar Producto
+            document.getElementById('form-nuevo-producto').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const nuevo = {
+                    nombre: document.getElementById('prod-nombre').value,
+                    descripcion: document.getElementById('prod-desc').value,
+                    precio: parseInt(document.getElementById('prod-precio').value, 10),
+                    imagen_url: document.getElementById('prod-img').value
+                };
+                const { error } = await clienteSupabase.from('productos').insert([nuevo]);
+                if (!error) {
+                    notificar('¡Producto guardado en Supabase!');
+                    e.target.reset();
+                    cargarListasAdmin();
+                }
+            });
+
+            // Guardar Actividad
+            document.getElementById('form-nueva-actividad').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const nueva = {
+                    titulo: document.getElementById('act-titulo').value,
+                    horario: document.getElementById('act-horario').value,
+                    descripcion: document.getElementById('act-desc').value,
+                    imagen_url: document.getElementById('act-img').value
+                };
+                const { error } = await clienteSupabase.from('actividades').insert([nueva]);
+                if (!error) {
+                    notificar('¡Actividad guardada en Supabase!');
+                    e.target.reset();
+                    cargarListasAdmin();
+                }
+            });
+
+            // Cerrar sesión
+            btnCerrar.addEventListener('click', async function (e) {
+                e.preventDefault();
+                await clienteSupabase.auth.signOut();
+                location.reload();
+            });
+        })();
+    </script>
+</body>
+</html>

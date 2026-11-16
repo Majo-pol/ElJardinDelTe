@@ -26,6 +26,7 @@
     --terracota:      #D88A76;   /* acento cálido */
     --dorado:         #F3B947;   /* acento complementario */
     --marfil:         #FFF9F2;   /* neutro, fondos */
+    --verde-oliva:    #507843;
 
     /* Tonos derivados.
        El documento no define un color de texto, y los cinco de la
@@ -317,15 +318,26 @@ nav ul li a:hover {
 }
 
 /* ACERCA DE NOSOTROS, MENÚ Y ACTIVIDADES */
+/* ACERCA DE NOSOTROS */
 .seccion-historia {
-    background-color: var(--rosa-porcelana);
+    background-color: var(--verde-oscuro);
+    color: var(--marfil);
     padding: 55px 45px;
     border-radius: 18px;
-    box-shadow: var(--sombra-suave);
+    border-left: 8px solid var(--dorado);
+    box-shadow: 0 18px 40px rgba(47, 58, 36, 0.22);
     display: flex;
     flex-wrap: wrap;
     gap: 40px;
     align-items: center;
+}
+
+.seccion-historia .seccion-titulo {
+    color: var(--dorado);
+}
+
+.seccion-historia .seccion-titulo::after {
+    background-color: var(--verde-pistacho);
 }
 
 .historia-texto {
@@ -335,36 +347,43 @@ nav ul li a:hover {
 
 .historia-texto p {
     margin-bottom: 12px;
+    color: var(--rosa-porcelana);
+}
+
+.historia-texto strong {
+    color: #FFFFFF;
 }
 
 .historia-texto h3 {
-    font-size: 1.15rem;
-    color: var(--terracota-fuerte);
-    margin-top: 16px;
+    font-size: 1.2rem;
+    color: var(--verde-pistacho);
+    margin-top: 18px;
 }
 
 .bloque-como-llegar h2 {
     font-family: var(--fuente-titulos);
-    font-size: 2rem;
+    font-size: 2.2rem;
     margin: 26px 0 10px;
-    color: var(--verde-oscuro);
+    color: var(--dorado);
 }
 
 .historia-imagen {
     flex: 1;
     min-width: 280px;
-    height: 360px;
+    height: 380px;
     border-radius: 14px;
     object-fit: cover;
+    border: 3px solid rgba(243, 185, 71, 0.4);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
 }
 
 .boton-mapa {
     display: inline-block;
     margin-top: 15px;
-    background-color: var(--verde-oscuro);
-    color: var(--marfil);
+    background-color: var(--terracota-fuerte);
+    color: #FFFFFF;
     text-decoration: none;
-    padding: 10px 22px;
+    padding: 10px 24px;
     border-radius: 20px;
     font-size: 0.95rem;
     font-weight: 700;
@@ -372,9 +391,10 @@ nav ul li a:hover {
 }
 
 .boton-mapa:hover {
-    background-color: var(--terracota-fuerte);
-    color: #FFFFFF;
+    background-color: var(--dorado);
+    color: var(--verde-oscuro);
 }
+/* MENÚ DE BEBIDAS Y COMIDAS */
 
 .menu-columnas {
     display: grid;
@@ -787,4 +807,137 @@ footer {
     white-space: nowrap; /* Impide que el precio se separe (ej. que el $ quede arriba y el número abajo) */
     min-width: 65px;
     text-align: right;
+}
+
+/* ==========================================
+   MENÚ INTERACTIVO ESTILO LIBRITO
+   ========================================== */
+.libro-pestanas {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-width: 780px;
+    margin: 0 auto 20px;
+}
+
+.pestana-btn {
+    background-color: var(--rosa-porcelana);
+    color: var(--verde-oscuro);
+    border: 2px solid transparent;
+    padding: 10px 18px;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transicion-suave);
+}
+
+.pestana-btn:hover {
+    border-color: var(--terracota);
+}
+
+.pestana-btn.activa {
+    background-color: var(--verde-oscuro);
+    color: var(--marfil);
+    box-shadow: 0 4px 10px rgba(47, 58, 36, 0.2);
+}
+
+.libro-menu {
+    max-width: 780px;
+    margin: 0 auto;
+    background: #FFFFFF;
+    border-radius: 18px;
+    padding: 40px 45px 30px;
+    /* Efecto de lomo de libro a la izquierda y hojas a la derecha */
+    border-left: 10px solid var(--verde-pistacho);
+    box-shadow: 
+        var(--sombra-suave),
+        6px 6px 0px #F2E5E2,
+        12px 12px 0px #E7DDD4;
+    position: relative;
+}
+
+.pagina-libro {
+    display: none;
+    animation: pasarHoja 0.35s ease-out;
+}
+
+.pagina-libro.activa {
+    display: block;
+}
+
+@keyframes pasarHoja {
+    from {
+        opacity: 0;
+        transform: translateX(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.pagina-encabezado {
+    border-bottom: 2px solid var(--verde-pistacho);
+    padding-bottom: 12px;
+    margin-bottom: 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pagina-encabezado h3 {
+    font-family: var(--fuente-titulos);
+    font-size: 2.1rem;
+    color: var(--verde-oscuro);
+}
+
+.pagina-encabezado span {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    font-style: italic;
+}
+
+.libro-controles {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--linea-tenue);
+    gap: 10px;
+}
+
+.boton-libro {
+    background-color: var(--rosa-porcelana);
+    color: var(--verde-oscuro);
+    border: none;
+    padding: 9px 18px;
+    border-radius: 20px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transicion-suave);
+}
+
+.boton-libro:hover {
+    background-color: var(--terracota-fuerte);
+    color: #FFFFFF;
+}
+
+.indicador-pagina {
+    font-weight: 700;
+    color: var(--texto-suave);
+    font-size: 0.92rem;
+}
+
+@media (max-width: 600px) {
+    .libro-menu {
+        padding: 25px 20px;
+    }
+    .libro-controles {
+        flex-direction: column;
+    }
 }

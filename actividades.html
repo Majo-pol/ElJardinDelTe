@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividades y Experiencias | El Jardín del Té</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-contenedor" id="boton-inicio-logo">El Jardín del Té</div>
+        <button class="menu-boton" id="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-navegacion">☰</button>
+        <nav>
+            <ul id="menu-navegacion">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="destacado.html">Productos Destacados y Salón</a></li>
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="actividades.html">Actividades</a></li>
+                <li><a href="contacto.html">Reservas y contacto</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="contenedor-principal">
+        <section id="actividades" class="seccion-bloque">
+            <h2 class="seccion-titulo">Calendario de Actividades</h2>
+            <div class="actividades-grid" id="contenedor-actividades"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 El Jardín del Té. Todos los derechos reservados. Creado con pasión.</p>
+    </footer>
+
+    <div class="notificacion-flotante" id="notificacion" role="status" aria-live="polite"></div>
+    <script src="conexion.js"></script>
+    <script src="logica.js"></script>
+</body>
+</html>

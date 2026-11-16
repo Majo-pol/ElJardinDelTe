@@ -1,352 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Jardín del Té | Café de experiencia en Bogotá</title>
-    <meta name="description"
-        content="Café de experiencia en Chapinero, Bogotá. Tés e infusiones, brunch, postres y talleres creativos. Reserva tu mesa por WhatsApp.">
-
-    <!-- Tipografías de la marca.
-         Amatic SC es la manuscrita del logotipo y Quicksand la del
-         cuerpo de texto. El preconnect le avisa al navegador que va a
-         necesitar ese servidor, para que abra la conexión antes. -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap">
-
-    <!-- Conecta con tu archivo de estilos -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-
 <body>
-
-    <!-- Encabezado y Menú de Navegación -->
     <header>
         <div class="logo-contenedor" id="boton-inicio-logo">El Jardín del Té</div>
-
-        <!-- Sólo se ve en pantallas pequeñas. aria-expanded lo actualiza logica.js -->
-        <button class="menu-boton" id="menu-boton" aria-label="Abrir menú" aria-expanded="false"
-            aria-controls="menu-navegacion">☰</button>
-
+        <button class="menu-boton" id="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-navegacion">☰</button>
         <nav>
             <ul id="menu-navegacion">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#nosotros">Acerca de Nosotros</a></li>
-                <li><a href="#catalogo">Productos Destacados</a></li>
-                <li><a href="#menu">Menú</a></li>
-                <li><a href="#actividades">Actividades</a></li>
-                <li><a href="#reservas">Contáctanos / Reserva</a></li>
-                <li><a href="#redes">Nuestras Redes</a></li>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="destacado.html">Productos Destacados y Salón</a></li>
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="actividades.html">Actividades</a></li>
+                <li><a href="contacto.html">Reservas y contacto</a></li>
+                <li><a href="admin.html">Admin</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Portada Principal (Hero) -->
     <section id="inicio" class="hero-seccion">
         <h1>El Plan Más Bonito de Bogotá</h1>
-        <p>Ven y disfruta en nuestra mesa de una amplia variedad de Té e infusiones servidos de una forma innovadora,
-            acompañados por exquisitos postres y empanadas horneadas. También ofrecemos Café y Chocolate caliente.</p>
-        <a href="#catalogo" class="boton-primario">Explorar</a>
+        <p>Más que una cafetería, somos el lugar donde tus charlas se vuelven inolvidables. Ven a compartir teteras humeantes, chocolate caliente, postres recién horneados y experiencias artísticas en el rincón más acogedor y lleno de magia de Chapinero.</p>
+        <a href="menu.html" class="boton-primario">Ver Menú Completo</a>
     </section>
 
-    <!-- Contenido Principal -->
-    <main class="contenedor-principal">
-
-        <!-- SECCIÓN ACERCA DE NOSOTROS -->
-        <section id="nosotros" class="seccion-historia seccion-bloque">
-            <div class="historia-texto">
-                <h2 class="seccion-titulo titulo-izquierda">Acerca de Nosotros</h2>
-                <p>En <strong>El Jardín del Té</strong> creemos que cada infusión cuenta una historia. Seleccionamos
-                    cuidadosamente botánicos, flores y hebras del mundo para crear experiencias sensoriales únicas en
-                    nuestro salón que transforman tu rutina en un ritual de autocuidado y calma.</p>
-
-                <div class="bloque-vision-mision">
-                    <h3>Visión</h3>
-                    <p>Acá se escribe la visión.</p>
-                    <h3>Misión</h3>
-                    <p>Acá se escribe la misión.</p>
-                </div>
-
-                <div class="bloque-como-llegar">
-                    <h2>¿Cómo llegar?</h2>
-                    <p><strong>📍 Dirección:</strong> Bogotá, Colombia (Chapinero). Calle 71 # 11-12</p>
-                    <p><strong>Horario:</strong></p>
-                    <p><strong>Lunes a viernes:</strong> 11:00 AM – 8:00 PM</p>
-                    <p><strong>Sábados y domingos:</strong> 10:00 AM – 7:00 PM</p>
-                    <a href="https://www.google.com/maps/place/El+Jard%C3%ADn+del+T%C3%A9+-+Quinta+Camacho/@4.6566023,-74.0596281,17z/data=!4m7!3m6!1s0x8e3f91671d221c93:0x9432e3e3e0ce7391!8m2!3d4.6566023!4d-74.0596281!10e1!16s%2Fg%2F11ng6lbdtq?entry=ttu&g_ep=EgoyMDI2MTAxOS4wIKXMDSoASAFQAw%3D%3D"
-                        target="_blank" rel="noopener" class="boton-mapa">
-                        Google Maps
-                    </a>
-                </div>
-            </div>
-            <img src="imagenes/nosotros-logo.jpg"
-                alt="Logo de El Jardín del Té y letrero de neón sobre el muro verde del salón" class="historia-imagen"
-                loading="lazy">
-        </section>
-
-        <!-- SECCIÓN GALERÍA / CARRUSEL DE FOTOS -->
-        <section id="galeria" class="seccion-bloque">
-            <h2 class="seccion-titulo">Conoce Nuestro Salón</h2>
-            <div class="carrusel-contenedor">
-                <button class="carrusel-btn prev" id="carrusel-prev" aria-label="Foto anterior">❮</button>
-                <div class="carrusel-track-container">
-                    <div class="carrusel-track" id="carrusel-track">
-                        <img src="imagenes/salon-01.jpg" alt="Salón con flores colgantes del techo y mesas ocupadas"
-                            class="carrusel-img">
-                        <img src="imagenes/salon-02.jpg" alt="Vista del salón hacia la entrada, con el techo florido"
-                            class="carrusel-img">
-                        <img src="imagenes/salon-03.jpg" alt="Mesas junto al ventanal con vista a la calle"
-                            class="carrusel-img">
-                        <img src="imagenes/salon-04.jpg" alt="Mesa servida con platos para compartir"
-                            class="carrusel-img">
-                        <img src="imagenes/salon-05.jpg"
-                            alt="Detalle de la decoración artesanal sobre una mesa pintada a mano" class="carrusel-img">
-                        <img src="imagenes/salon-06.jpg" alt="Las flores colgantes iluminadas de noche"
-                            class="carrusel-img">
-                    </div>
-                </div>
-                <button class="carrusel-btn next" id="carrusel-next" aria-label="Foto siguiente">❯</button>
-            </div>
-        </section>
-
-        <!-- SECCIÓN PRODUCTOS DESTACADOS -->
-        <section id="catalogo" class="seccion-bloque">
-            <h2 class="seccion-titulo">Productos Destacados</h2>
-            <div class="catalogo-grid" id="contenedor-productos"></div>
-        </section>
-
-        <!-- SECCIÓN MENÚ COMPLETO -->
-        <section id="menu" class="seccion-bloque">
-            <h2 class="seccion-titulo">Nuestro Menú en Mesa</h2>
-            <div class="menu-columnas">
-                <div class="menu-categoria">
-                    <h3>Infusiones, Tés y Bebidas</h3>
-                    <ul class="lista-menu">
-                        <li class="item-bebida">
-                            <span>Té Rojo</span>
-                            <select class="selector-tamano">
-                                <option value="9000">Pequeño (En agua 9 OZ)</option>
-                                <option value="10500">Mediano (frío 12 OZ)</option>
-                                <option value="33000">Tetera (Aprox x4 VASOS DE TÉ)</option>
-                            </select>
-                            <strong class="precio-bebida">$9.000</strong>
-                        </li>
-                        <li class="item-bebida">
-                            <span>Té Verde</span>
-                            <select class="selector-tamano">
-                                <option value="9000">Pequeño (En agua 9 OZ)</option>
-                                <option value="10500">Mediano (frío 12 OZ)</option>
-                                <option value="33000">Tetera (Aprox x4 VASOS DE TÉ)</option>
-                            </select>
-                            <strong class="precio-bebida">$9.000</strong>
-                        </li>
-                        <li class="item-bebida">
-                            <span>Té Blanco</span>
-                            <select class="selector-tamano">
-                                <option value="9000">Pequeño (En agua 9 OZ)</option>
-                                <option value="10500">Mediano (frío 12 OZ)</option>
-                                <option value="33000">Tetera (Aprox x4 VASOS DE TÉ)</option>
-                            </select>
-                            <strong class="precio-bebida">$9.000</strong>
-                        </li>
-                        <li class="item-bebida">
-                            <span>Té Negro</span>
-                            <select class="selector-tamano">
-                                <option value="9000">Pequeño (En agua 9 OZ)</option>
-                                <option value="10500">Mediano (frío 12 OZ)</option>
-                                <option value="33000">Tetera (Aprox x4 VASOS DE TÉ)</option>
-                            </select>
-                            <strong class="precio-bebida">$9.000</strong>
-                        </li>
-                        <li class="item-bebida">
-                            <span>Infusión ZEN</span>
-                            <select class="selector-tamano">
-                                <option value="9000">Pequeño (En agua 9 OZ)</option>
-                                <option value="10500">Mediano (frío 12 OZ)</option>
-                                <option value="33000">Tetera (Aprox x4 VASOS DE TÉ)</option>
-                            </select>
-                            <strong class="precio-bebida">$9.000</strong>
-                        </li>
-                        <li class="item-bebida">
-                            <span>Susurro de manzanilla</span>
-                            <select class="selector-tamano">
-                                <option value="9000">Pequeño (En agua 9 OZ)</option>
-                                <option value="10500">Mediano (frío 12 OZ)</option>
-                                <option value="33000">Tetera (Aprox x4 VASOS DE TÉ)</option>
-                            </select>
-                            <strong class="precio-bebida">$9.000</strong>
-                        </li>
-                        <li class="item-bebida">
-                            <span>Ecos del corazón</span>
-                            <select class="selector-tamano">
-                                <option value="9000">Pequeño (En agua 9 OZ)</option>
-                                <option value="10500">Mediano (frío 12 OZ)</option>
-                                <option value="33000">Tetera (Aprox x4 VASOS DE TÉ)</option>
-                            </select>
-                            <strong class="precio-bebida">$9.000</strong>
-                        </li>
-                        <li class="item-bebida">
-                            <span>Atardecer en Jamaica</span>
-                            <select class="selector-tamano">
-                                <option value="9000">Pequeño (En agua 9 OZ)</option>
-                                <option value="10500">Mediano (frío 12 OZ)</option>
-                                <option value="33000">Tetera (Aprox x4 VASOS DE TÉ)</option>
-                            </select>
-                            <strong class="precio-bebida">$9.000</strong>
-                        </li>
-                        <li class="item-bebida">
-                            <span>Sol aromático</span>
-                            <select class="selector-tamano">
-                                <option value="9000">Pequeño (En agua 9 OZ)</option>
-                                <option value="10500">Mediano (frío 12 OZ)</option>
-                                <option value="33000">Tetera (Aprox x4 VASOS DE TÉ)</option>
-                            </select>
-                            <strong class="precio-bebida">$9.000</strong>
-                        </li>
-                        <li class="item-bebida">
-                            <span>Amanecer primaveral</span>
-                            <select class="selector-tamano">
-                                <option value="9000">Pequeño (En agua 9 OZ)</option>
-                                <option value="10500">Mediano (frío 12 OZ)</option>
-                                <option value="33000">Tetera (Aprox x4 VASOS DE TÉ)</option>
-                            </select>
-                            <strong class="precio-bebida">$9.000</strong>
-                        </li>
-                        <li><span>Mokaccino </span> <strong>$12000</strong></li>
-                        <li><span>Capuchai </span> <strong>$12000</strong></li>
-                        <li><span>Especiado </span> <strong>$12000</strong></li>
-                        <li><span>Luna Nueva </span> <strong>$12000</strong></li>
-                        <li><span>Leche Dorada </span> <strong>$12000</strong></li>
-                        <li><span>Matcha </span> <strong>$17500</strong></li>
-                        <li><span>Chocochai </span> <strong>$12000</strong></li>
-                        <li><span>Pink Latte </span> <strong>$12000</strong></li>
-                        <li><span>Chai de la Casa </span> <strong>$12000</strong></li>
-                        <li><span>Cálido, Sutil y Abrazador </span> <strong>$12000</strong></li>
-                        <li><span>Matcha Latte Frío </span> <strong>$19000</strong></li>
-                        <li><span>Sodas (Bienestar) </span> <strong>$11000</strong></li>
-                        <li><span>Limonadas (Mango Biche, Hierba Buena, Coco, Cereza) </span> <strong>$14000</strong>
-                        </li>
-                        <li><span>Granizados (Café) </span> <strong>$16500</strong></li>
-                        <li><span>Maridaje con Café (Cafe del Jardin, Infusion Zen - Cafe) </span>
-                            <strong>$10000</strong>
-                        </li>
-                        <li><span>Chocolate Especial </span> <strong>$16000</strong></li>
-                        <li><span>Cocoa </span> <strong>$9000</strong></li>
-                        <li class="item-bebida">
-                            <span>Chocobombas</span>
-                            <select class="selector-tamano">
-                                <option value="15000">Chocochapinero</option>
-                                <option value="15000">Choco Oreo</option>
-                                <option value="15000">Tremendo Chocolate</option>
-                            </select>
-                            <strong>$15.000</strong>
-                        </li>
-                        <li><span>Café </span> <strong>$6500</strong></li>
-                        <li><span>Capuchino </span> <strong>$10000</strong></li>
-                        <li><span>Latte </span> <strong>$10000</strong></li>
-                        <li><span>Café Dalgona </span> <strong>$11000</strong></li>
-                        <li><span>Capuchino con licor </span> <strong>$18500</strong></li>
-                    </ul>
-                </div>
-                <div class="menu-categoria">
-                    <h3>Para acompañar</h3>
-                    <ul class="lista-menu">
-                        <li><span>Torta de Naranja Amapola </span> <strong>$11000</strong></li>
-                        <li><span>Torta de Limon Arandanos</span> <strong>$11000</strong></li>
-                        <li><span>Brownie </span> <strong>$13000</strong></li>
-                        <li><span>Postre de café </span> <strong>$17000</strong></li>
-                        <li><span>Postre Red Velvet </span> <strong>$15000</strong></li>
-                        <li><span>Galleta chips de chocolate </span> <strong>$8000</strong></li>
-                        <li><span>Brownie con Helado </span> <strong>$18000</strong></li>
-                        <li><span>Cookie Sundae </span> <strong>$17500</strong></li>
-                        <li><span>Café Francés </span> <strong>$35000</strong></li>
-                        <li><span>Café Francés (sin capuchino) </span> <strong>$28000</strong></li>
-                        <li><span>Croissant de masa madre con jamón y queso </span> <strong>$14000</strong></li>
-                        <li><span>Croissant de masa madre con nutella o almendras </span> <strong>$14000</strong></li>
-                        <li><span>Waffle de Sal </span> <strong>$24000</strong></li>
-                        <li><span>Waffle Dulce </span> <strong>$24000</strong></li>
-                        <li><span>Mini Wafles </span> <strong>$17000</strong></li>
-                        <li><span>Tostada Francesa </span> <strong>$24000</strong></li>
-                        <li><span>Tostada Italiana </span> <strong>$30000</strong></li>
-                        <li><span>Sanduche primavera </span> <strong>$30000</strong></li>
-                        <li><span>Sanduche americano </span> <strong>$15000</strong></li>
-                        <li><span>Sanduche verano </span> <strong>$30000</strong></li>
-                    </ul>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECCIÓN CALENDARIO DE ACTIVIDADES (Redirecciona a WhatsApp) -->
-        <section id="actividades" class="seccion-bloque">
-            <h2 class="seccion-titulo">Calendario de Actividades</h2>
-            <div class="actividades-grid" id="contenedor-actividades"></div>
-        </section>
-
-        <!-- SECCIÓN CONTÁCTANOS / RESERVA -->
-        <section id="reservas" class="seccion-bloque">
-            <h2 class="seccion-titulo">Reserva tu Mesa o Contáctanos</h2>
-            <form class="formulario-reserva" id="form-reserva">
-                <label for="nombre-reserva">Nombre completo</label>
-                <input type="text" id="nombre-reserva" name="nombre" placeholder="Tu nombre completo"
-                    autocomplete="name" required>
-
-                <label for="telefono-reserva">Teléfono / WhatsApp</label>
-                <input type="tel" id="telefono-reserva" name="telefono" placeholder="Ej: 311 581 1518"
-                    autocomplete="tel" required>
-
-                <label for="fecha-reserva">Fecha de la reserva</label>
-                <input type="date" id="fecha-reserva" name="fecha" required>
-
-                <label for="personas-reserva">Número de personas</label>
-                <select id="personas-reserva" name="personas" required>
-                    <option value="">Número de personas</option>
-                    <option value="2 personas">2 personas</option>
-                    <option value="3 a 4 personas">3 a 4 personas</option>
-                    <option value="Grupo (5 o más)">Grupo (5 o más)</option>
-                </select>
-
-                <label for="notas-reserva">Solicitudes especiales (opcional)</label>
-                <textarea id="notas-reserva" name="notas" rows="3"
-                    placeholder="¿Alguna solicitud especial o celebración?"></textarea>
-
-                <button type="submit" class="boton-primario">Confirmar Reserva por WhatsApp</button>
-            </form>
-        </section>
-
-        <!-- SECCIÓN NUESTRAS REDES -->
-        <section id="redes" class="seccion-bloque seccion-redes">
-            <h2 class="seccion-titulo">Síguenos en Nuestras Redes</h2>
-            <p>Comparte tu experiencia usando <strong>#ElJardinDelTeBogota</strong></p>
-            <div class="botones-redes">
-                <a href="https://www.instagram.com/el_jardin_del_te/?hl=es" target="_blank" rel="noopener"
-                    class="boton-red">Instagram</a>
-                <a href="https://www.tiktok.com/@el_jardin_del_te?_r=1&_t=ZS-9BLulRtzYN4" target="_blank" rel="noopener"
-                    class="boton-red">TikTok</a>
-                <a href="https://wa.me/573115811518" target="_blank" rel="noopener" class="boton-red">WhatsApp</a>
-                <a href="https://share.google/7ezLyxmduYvV16g8F" target="_blank" rel="noopener"
-                    class="boton-red">Reseñas Google</a>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Pie de página -->
     <footer>
         <p>© 2026 El Jardín del Té. Todos los derechos reservados. Creado con pasión.</p>
     </footer>
 
-    <!-- Notificación Flotante.
-         aria-live hace que un lector de pantalla también la anuncie. -->
-    <div class="notificacion-flotante" id="notificacion" role="status" aria-live="polite">
-        ¡Redirigiendo a WhatsApp!
-    </div>
-
-    <!-- Conecta con tu archivo de JavaScript -->
+    <div class="notificacion-flotante" id="notificacion" role="status" aria-live="polite"></div>
+    <script src="conexion.js"></script>
     <script src="logica.js"></script>
 </body>
-
 </html>

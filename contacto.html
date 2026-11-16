@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas y Contacto | El Jardín del Té</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <header>
+        <div class="logo-contenedor" id="boton-inicio-logo">El Jardín del Té</div>
+        <button class="menu-boton" id="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-navegacion">☰</button>
+        <nav>
+            <ul id="menu-navegacion">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="destacado.html">Productos Destacados y Salón</a></li>
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="actividades.html">Actividades</a></li>
+                <li><a href="contacto.html">Reservas y contacto</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="contenedor-principal">
+        <section id="reservas" class="seccion-bloque">
+            <h2 class="seccion-titulo">Reserva tu Mesa o Contáctanos</h2>
+            <form class="formulario-reserva" id="form-reserva">
+                <label for="nombre-reserva">Nombre completo</label>
+                <input type="text" id="nombre-reserva" name="nombre" placeholder="Tu nombre completo" autocomplete="name" required>
+
+                <label for="telefono-reserva">Teléfono / WhatsApp</label>
+                <input type="tel" id="telefono-reserva" name="telefono" placeholder="Ej: 311 581 1518" autocomplete="tel" required>
+
+                <label for="fecha-reserva">Fecha de la reserva</label>
+                <input type="date" id="fecha-reserva" name="fecha" required>
+
+                <label for="personas-reserva">Número de personas</label>
+                <select id="personas-reserva" name="personas" required>
+                    <option value="">Número de personas</option>
+                    <option value="2 personas">2 personas</option>
+                    <option value="3 a 4 personas">3 a 4 personas</option>
+                    <option value="Grupo (5 o más)">Grupo (5 o más)</option>
+                </select>
+
+                <label for="notas-reserva">Solicitudes especiales (opcional)</label>
+                <textarea id="notas-reserva" name="notas" rows="3" placeholder="¿Alguna solicitud especial o celebración?"></textarea>
+
+                <button type="submit" class="boton-primario">Confirmar Reserva por WhatsApp</button>
+            </form>
+        </section>
+
+        <section id="redes" class="seccion-bloque seccion-redes">
+            <h2 class="seccion-titulo">Síguenos en Nuestras Redes</h2>
+            <p>Comparte tu experiencia usando <strong>#ElJardinDelTeBogota</strong></p>
+            <div class="botones-redes">
+                <a href="https://www.instagram.com/el_jardin_del_te/?hl=es" target="_blank" rel="noopener" class="boton-red">Instagram</a>
+                <a href="https://www.tiktok.com/@el_jardin_del_te?_r=1&_t=ZS-9BLulRtzYN4" target="_blank" rel="noopener" class="boton-red">TikTok</a>
+                <a href="https://wa.me/573115811518" target="_blank" rel="noopener" class="boton-red">WhatsApp</a>
+                <a href="https://share.google/7ezLyxmduYvV16g8F" target="_blank" rel="noopener" class="boton-red">Reseñas Google</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 El Jardín del Té. Todos los derechos reservados. Creado con pasión.</p>
+    </footer>
+
+    <div class="notificacion-flotante" id="notificacion" role="status" aria-live="polite"></div>
+    <script src="logica.js"></script>
+</body>
+</html>

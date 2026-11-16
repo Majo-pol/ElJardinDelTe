@@ -1,39 +1,34 @@
 (function () {
     'use strict';
 
-    // Número de WhatsApp de la cafetería (con código 57 de Colombia).
-    // Va como texto y en un solo sitio: antes estaba escrito a mano en
-    // cada enlace, así que cambiarlo obligaba a buscarlo por todo el
-    // archivo y era fácil dejar uno viejo.
     const NUMERO_WHATSAPP = "573115811518";
 
-    // LISTA DE PRODUCTOS DESTACADOS (Solo consumo en el sitio)
-    const inventarioProductos = [
+    // Datos de respaldo por si aún no se ha conectado Supabase
+    let inventarioProductos = [
         {
             identificador: 1,
             nombre: "Chocolate Especial con Tostada Francesa",
             descripcion: "Delicioso chocolate caliente con una tostada francesa.",
-            precio: 0,
+            precio: 38000,
             imagenUrl: "imagenes/producto-01.jpg"
         },
         {
             identificador: 2,
             nombre: "Capuccino con Tostada Italiana",
             descripcion: "Delicioso capuccino caliente con una tostada italiana.",
-            precio: 0,
+            precio: 38000,
             imagenUrl: "imagenes/producto-02.jpg"
         },
         {
             identificador: 3,
             nombre: "Latte con Tostada Francesa",
             descripcion: "Delicioso latte caliente con una tostada francesa.",
-            precio: 0,
+            precio: 32000,
             imagenUrl: "imagenes/producto-03.jpg"
         }
     ];
 
-    // 2. LISTA DE ACTIVIDADES (Redireccionan a WhatsApp)
-    const calendarioActividades = [
+    let calendarioActividades = [
         {
             identificador: 1,
             titulo: "Pinta & Crea",
@@ -57,14 +52,61 @@
         }
     ];
 
-    // Arma el enlace de WhatsApp con el mensaje ya codificado.
-    // encodeURIComponent es lo que hace que los acentos, los saltos de
-    // línea y los asteriscos de negrita lleguen bien al chat.
     function enlaceWhatsApp(mensaje) {
         return 'https://wa.me/' + NUMERO_WHATSAPP + '?text=' + encodeURIComponent(mensaje);
     }
 
-    // MOSTRAR LOS PRODUCTOS EN LA PANTALLA
+    // CARGAR DATOS DESDE SUPABASE
+    async function cargarDatosDesdeSupabase() {
+        if (typeof clienteSupabase === 'undefined' || !clienteSupabase) {
+            mostrarCatalogoProductos();
+            mostrarActividades();
+            return;
+        }
+
+        // 1. Consultar Productos en Supabase
+        if (document.getElementById('contenedor-productos')) {
+            const { data: prodBD, error: errProd } = await clienteSupabase
+                .from('productos')
+                .select('*')
+                .order('id', { ascending: true });
+
+            if (!errProd && prodBD && prodBD.length > 0) {
+                inventarioProductos = prodBD.map(function (p) {
+                    return {
+                        identificador: p.id,
+                        nombre: p.nombre,
+                        descripcion: p.descripcion,
+                        precio: p.precio,
+                        imagenUrl: p.imagen_url
+                    };
+                });
+            }
+            mostrarCatalogoProductos();
+        }
+
+        // 2. Consultar Actividades en Supabase
+        if (document.getElementById('contenedor-actividades')) {
+            const { data: actBD, error: errAct } = await clienteSupabase
+                .from('actividades')
+                .select('*')
+                .order('id', { ascending: true });
+
+            if (!errAct && actBD && actBD.length > 0) {
+                calendarioActividades = actBD.map(function (a) {
+                    return {
+                        identificador: a.id,
+                        titulo: a.titulo,
+                        horario: a.horario,
+                        descripcion: a.descripcion,
+                        imagenUrl: a.imagen_url
+                    };
+                });
+            }
+            mostrarActividades();
+        }
+    }
+
     function mostrarCatalogoProductos() {
         const contenedorProductos = document.getElementById('contenedor-productos');
         if (!contenedorProductos) return;
@@ -77,9 +119,6 @@
             const tarjetaDiv = document.createElement('div');
             tarjetaDiv.className = 'tarjeta-producto';
 
-            // Sólo se crea la etiqueta <img> si de verdad hay una foto.
-            // Un src vacío no muestra nada y algunos navegadores vuelven
-            // a pedir la página entera.
             if (producto.imagenUrl) {
                 const imagenTarjeta = document.createElement('img');
                 imagenTarjeta.src = producto.imagenUrl;
@@ -106,7 +145,7 @@
 
             const etiquetaPrecio = document.createElement('span');
             etiquetaPrecio.className = 'precio';
-            etiquetaPrecio.textContent = '$' + producto.precio.toLocaleString('es-CO');
+            etiquetaPrecio.textContent = '$' + Number(producto.precio).toLocaleString('es-CO');
             precioYDetalle.appendChild(etiquetaPrecio);
 
             const etiquetaSitio = document.createElement('span');
@@ -120,7 +159,6 @@
         });
     }
 
-    // MOSTRAR LAS ACTIVIDADES CON SU BOTÓN A WHATSAPP
     function mostrarActividades() {
         const contenedorActividades = document.getElementById('contenedor-actividades');
         if (!contenedorActividades) return;
@@ -184,7 +222,6 @@
         }, 3000);
     }
 
-    // MENÚ HAMBURGUESA (sólo se ve en pantallas angostas)
     function activarMenuResponsive() {
         const boton = document.getElementById('menu-boton');
         const lista = document.getElementById('menu-navegacion');
@@ -202,25 +239,19 @@
             boton.textContent = abierto ? '✕' : '☰';
         });
 
-        // Al tocar un enlace el menú se cierra solo: si no, tapa la
-        // sección a la que el usuario acaba de saltar.
         lista.addEventListener('click', function (evento) {
             if (evento.target.tagName === 'A') cerrarMenu();
         });
 
-        // Si la ventana se agranda hasta el diseño de escritorio, se
-        // limpia el estado para no dejar el menú a medias.
         window.addEventListener('resize', function () {
             if (window.innerWidth > 900) cerrarMenu();
         });
     }
 
-    // ACTIVAR LOS CLICS DE ACTIVIDADES Y RESERVAS
     function activarBotonesDeLaPagina() {
         document.body.addEventListener('click', function (evento) {
             const objetivo = evento.target;
 
-            // Si hacen clic en el botón de una Actividad -> Redirigir a WhatsApp
             if (objetivo.classList.contains('boton-actividad-wa')) {
                 const id = parseInt(objetivo.getAttribute('data-idactividad'), 10);
                 const actividadElegida = calendarioActividades.find(function (a) {
@@ -238,21 +269,17 @@
                 }
             }
 
-            // Volver arriba al tocar el logo
             if (objetivo.id === 'boton-inicio-logo' || objetivo.closest('#boton-inicio-logo')) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
+                window.location.href = 'index.html';
             }
         });
 
-        // Enviar el formulario de Reserva de Mesa a WhatsApp
         const formularioReserva = document.getElementById('form-reserva');
         if (formularioReserva) {
             formularioReserva.addEventListener('submit', function (evento) {
                 evento.preventDefault();
 
                 const nombre = document.getElementById('nombre-reserva').value;
-                // El teléfono se pedía en el formulario pero nunca se leía,
-                // así que la reserva llegaba sin forma de devolver la llamada.
                 const telefono = document.getElementById('telefono-reserva').value;
                 const fecha = document.getElementById('fecha-reserva').value;
                 const personas = document.getElementById('personas-reserva').value;
@@ -276,7 +303,6 @@
         }
     }
 
-    // CARRUSEL DE FOTOS
     function iniciarCarrusel() {
         const track = document.getElementById('carrusel-track');
         if (!track) return;
@@ -295,58 +321,98 @@
 
         botonNext.addEventListener('click', function () {
             indiceActual++;
-            if (indiceActual >= imagenes.length) {
-                indiceActual = 0; // Si llega al final, vuelve a la primera foto
-            }
+            if (indiceActual >= imagenes.length) indiceActual = 0;
             actualizarPosicionCarrusel();
         });
 
         botonPrev.addEventListener('click', function () {
             indiceActual--;
-            if (indiceActual < 0) {
-                indiceActual = imagenes.length - 1; // Si está en la primera, salta a la última
-            }
+            if (indiceActual < 0) indiceActual = imagenes.length - 1;
             actualizarPosicionCarrusel();
         });
 
-        // La posición se calcula en píxeles a partir del ancho de la foto.
-        // Si la ventana cambia de tamaño ese ancho cambia, así que hay que
-        // volver a calcularla o el carrusel queda desalineado.
         window.addEventListener('resize', actualizarPosicionCarrusel);
     }
 
-    // INICIAR LA PÁGINA
+    function activarSelectoresTamano() {
+        const selectoresTamano = document.querySelectorAll('.selector-tamano');
+        selectoresTamano.forEach(function (selector) {
+            selector.addEventListener('change', function () {
+                const nuevoPrecio = this.value;
+                const contenedorBebida = this.closest('li');
+                if (contenedorBebida) {
+                    const precioElemento = contenedorBebida.querySelector('strong');
+                    if (precioElemento) {
+                        precioElemento.textContent = '$' + Number(nuevoPrecio).toLocaleString('es-CO');
+                    }
+                }
+            });
+        });
+    }
+
     function iniciarPagina() {
-        mostrarCatalogoProductos();
-        mostrarActividades();
+        cargarDatosDesdeSupabase();
         iniciarCarrusel();
         activarMenuResponsive();
         activarBotonesDeLaPagina();
+        activarSelectoresTamano();
     }
 
     document.addEventListener('DOMContentLoaded', iniciarPagina);
 })();
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Seleccionamos todos los desplegables
-    const selectoresTamano = document.querySelectorAll('.selector-tamano');
+// LIBRITO INTERACTIVO DEL MENÚ
+    function iniciarLibroMenu() {
+        const paginas = document.querySelectorAll('.pagina-libro');
+        const pestanas = document.querySelectorAll('.pestana-btn');
+        const btnPrev = document.getElementById('libro-prev');
+        const btnNext = document.getElementById('libro-next');
+        const indicador = document.getElementById('libro-indicador');
 
-    selectoresTamano.forEach(selector => {
-        selector.addEventListener('change', function () {
-            const nuevoPrecio = this.value;
+        if (!paginas.length) return;
 
-            // Buscamos el elemento de la lista (li) que contiene este selector
-            const contenedorBebida = this.closest('li');
+        let paginaActual = 0;
 
-            if (contenedorBebida) {
-                // Buscamos la etiqueta strong dentro de ese mismo li
-                const precioElemento = contenedorBebida.querySelector('strong');
-
-                if (precioElemento) {
-                    // Actualizamos el precio con el formato correcto
-                    precioElemento.textContent = '$' + Number(nuevoPrecio).toLocaleString('es-CO');
-                }
+        function mostrarPagina(indice) {
+            paginaActual = indice;
+            paginas.forEach(function (pag, i) {
+                pag.classList.toggle('activa', i === paginaActual);
+            });
+            pestanas.forEach(function (pest, i) {
+                pest.classList.toggle('activa', i === paginaActual);
+            });
+            if (indicador) {
+                indicador.textContent = 'Página ' + (paginaActual + 1) + ' de ' + paginas.length;
             }
+        }
+
+        pestanas.forEach(function (pestana) {
+            pestana.addEventListener('click', function () {
+                const indice = parseInt(this.getAttribute('data-pagina'), 10);
+                mostrarPagina(indice);
+            });
         });
-    });
-});
+
+        if (btnNext) {
+            btnNext.addEventListener('click', function () {
+                const siguiente = (paginaActual + 1) % paginas.length;
+                mostrarPagina(siguiente);
+            });
+        }
+
+        if (btnPrev) {
+            btnPrev.addEventListener('click', function () {
+                const anterior = (paginaActual - 1 + paginas.length) % paginas.length;
+                mostrarPagina(anterior);
+            });
+        }
+    }
+
+    function iniciarPagina() {
+        cargarDatosDesdeSupabase();
+        iniciarCarrusel();
+        iniciarLibroMenu(); // <-- Activa el librito en menu.html
+        activarMenuResponsive();
+        activarBotonesDeLaPagina();
+        activarSelectoresTamano();
+    }
