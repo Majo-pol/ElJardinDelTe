@@ -3,7 +3,7 @@
 
     const NUMERO_WHATSAPP = "573115811518";
 
-    // Datos de respaldo por si aún no se ha conectado Supabase
+    // Datos de RESPALDO por si aún no se ha conectado Supabase
     let inventarioProductos = [
         {
             identificador: 1,
@@ -41,14 +41,14 @@
             titulo: "Brunch astrológico",
             horario: "Por definir",
             descripcion: "Disfruta de un brunch con un toque astrológico. Prepárate con la energía de cada mes y no te dejes sorprender por los astros. Cupos limitados, reserva con anticipación.",
-            imagenUrl: "imagenes/actividad-02.jpg"
+            imagenUrl: "imagenes/ceramica6.jpg"
         },
         {
             identificador: 3,
             titulo: "Decora & disfruta",
             horario: "Por definir",
             descripcion: "Disfruta de un taller de decoración Diseña tu propia torta y disfruta una experiencia deliciosa y creativa. Puedes escoger este plan con o sin brunch. Cupos limitados, reserva con anticipación.",
-            imagenUrl: "imagenes/actividad-03.jpg"
+            imagenUrl: "imagenes/decora-y-disfruta.jpeg"
         }
     ];
 
@@ -350,18 +350,7 @@
         });
     }
 
-    function iniciarPagina() {
-        cargarDatosDesdeSupabase();
-        iniciarCarrusel();
-        activarMenuResponsive();
-        activarBotonesDeLaPagina();
-        activarSelectoresTamano();
-    }
-
-    document.addEventListener('DOMContentLoaded', iniciarPagina);
-})();
-
-// LIBRITO INTERACTIVO DEL MENÚ
+    // LIBRITO INTERACTIVO DEL MENÚ
     function iniciarLibroMenu() {
         const paginas = document.querySelectorAll('.pagina-libro');
         const pestanas = document.querySelectorAll('.pestana-btn');
@@ -411,8 +400,11 @@
     function iniciarPagina() {
         cargarDatosDesdeSupabase();
         iniciarCarrusel();
-        iniciarLibroMenu(); // <-- Activa el librito en menu.html
+        iniciarLibroMenu();
         activarMenuResponsive();
         activarBotonesDeLaPagina();
         activarSelectoresTamano();
     }
+
+    document.addEventListener('DOMContentLoaded', iniciarPagina);
+})();

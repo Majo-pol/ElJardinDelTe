@@ -148,7 +148,7 @@ nav ul li a:hover {
 
 /* PORTADA PRINCIPAL (HERO) */
 .hero-seccion {
-    min-height: 88vh;
+    min-height: 90vh;
     /* La capa de color va encima de la foto para que el texto se lea.
        Sin ella, el letrero de neón compite con el título. */
     background:
