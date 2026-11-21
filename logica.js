@@ -1,7 +1,7 @@
 (function () {
     'use strict';
 
-    const NUMERO_WHATSAPP = "573115811518";
+    const NUMERO_WHATSAPP = "573001365169";
 
     // Datos de RESPALDO por si aún no se ha conectado Supabase
     let inventarioProductos = [
