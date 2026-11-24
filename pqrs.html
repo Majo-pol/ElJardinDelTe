@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PQRS | El Jardín del Té</title>
+    <meta name="description" content="Radica tu petición, queja, reclamo o sugerencia en El Jardín del Té.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-contenedor" id="boton-inicio-logo">El Jardín del Té</div>
+        <button class="menu-boton" id="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-navegacion">☰</button>
+        <nav>
+            <ul id="menu-navegacion">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="destacado.html">Nuestros Destacados</a></li>
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="actividades.html">Actividades</a></li>
+                <li><a href="contacto.html">Reservas y contacto</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="contenedor-principal">
+        <section class="seccion-bloque">
+            <h2 class="seccion-titulo">PQRS</h2>
+            <p class="texto-intro">
+                Peticiones, quejas, reclamos y sugerencias. Cuéntanos qué pasó o qué te
+                gustaría que mejoráramos: todo lo que llega por aquí queda radicado con un
+                número y lo revisa el equipo. Te respondemos al correo que nos dejes.
+            </p>
+
+            <form class="formulario-reserva" id="form-pqrs">
+                <label for="pqrs-tipo">Tipo de solicitud</label>
+                <select id="pqrs-tipo" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="Petición">Petición — quiero pedir algo</option>
+                    <option value="Queja">Queja — algo del servicio no estuvo bien</option>
+                    <option value="Reclamo">Reclamo — quiero una solución concreta</option>
+                    <option value="Sugerencia">Sugerencia — tengo una idea</option>
+                    <option value="Felicitación">Felicitación — algo me encantó</option>
+                </select>
+
+                <label for="pqrs-nombre">Nombre completo</label>
+                <input type="text" id="pqrs-nombre" placeholder="Tu nombre completo" autocomplete="name" required>
+
+                <label for="pqrs-correo">Correo electrónico</label>
+                <input type="email" id="pqrs-correo" placeholder="correo@ejemplo.com" autocomplete="email" required>
+
+                <label for="pqrs-telefono">Teléfono (opcional)</label>
+                <input type="tel" id="pqrs-telefono" placeholder="Ej: 300 136 5169" autocomplete="tel">
+
+                <label for="pqrs-mensaje">Cuéntanos qué pasó</label>
+                <textarea id="pqrs-mensaje" rows="6" placeholder="Entre más detalles nos des (fecha, hora, qué pediste), más fácil nos queda darte una respuesta útil." required></textarea>
+
+                <!-- Ley 1581 de 2012 (habeas data): hay que pedir autorización
+                     expresa antes de guardar datos personales. -->
+                <label class="campo-casilla">
+                    <input type="checkbox" id="pqrs-autoriza" required>
+                    <span>Autorizo a El Jardín del Té a usar mis datos personales para dar respuesta a esta solicitud.</span>
+                </label>
+
+                <button type="submit" class="boton-primario" id="pqrs-enviar">Radicar solicitud</button>
+                <p class="mensaje-formulario" id="pqrs-resultado" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <nav class="pie-enlaces" aria-label="Enlaces del pie de página">
+            <a href="pqrs.html">PQRS</a>
+            <a href="empleo.html">Trabaja con nosotros</a>
+        </nav>
+        <p>© 2026 El Jardín del Té. Todos los derechos reservados. Aquí brillamos bonito.</p>
+    </footer>
+
+    <div class="notificacion-flotante" id="notificacion" role="status" aria-live="polite"></div>
+    <script src="conexion.js"></script>
+    <script src="logica.js"></script>
+</body>
+</html>

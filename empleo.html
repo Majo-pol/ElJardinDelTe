@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trabaja con Nosotros | El Jardín del Té</title>
+    <meta name="description" content="Déjanos tu hoja de vida y súmate al equipo de El Jardín del Té en Bogotá.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="estilos.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header>
+        <div class="logo-contenedor" id="boton-inicio-logo">El Jardín del Té</div>
+        <button class="menu-boton" id="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-navegacion">☰</button>
+        <nav>
+            <ul id="menu-navegacion">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="nosotros.html">Nosotros</a></li>
+                <li><a href="destacado.html">Nuestros Destacados</a></li>
+                <li><a href="menu.html">Menú</a></li>
+                <li><a href="actividades.html">Actividades</a></li>
+                <li><a href="contacto.html">Reservas y contacto</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="contenedor-principal">
+        <section class="seccion-bloque">
+            <h2 class="seccion-titulo">Trabaja con Nosotros</h2>
+            <p class="texto-intro">
+                Buscamos gente a la que le guste atender bonito y trabajar en equipo.
+                Déjanos tus datos y tu hoja de vida: guardamos todas las postulaciones y
+                te escribimos cuando se abra una vacante que encaje contigo.
+            </p>
+
+            <form class="formulario-reserva" id="form-empleo">
+                <label for="empleo-nombre">Nombre completo</label>
+                <input type="text" id="empleo-nombre" placeholder="Tu nombre completo" autocomplete="name" required>
+
+                <label for="empleo-correo">Correo electrónico</label>
+                <input type="email" id="empleo-correo" placeholder="correo@ejemplo.com" autocomplete="email" required>
+
+                <label for="empleo-telefono">Teléfono / WhatsApp</label>
+                <input type="tel" id="empleo-telefono" placeholder="Ej: 300 136 5169" autocomplete="tel" required>
+
+                <label for="empleo-cargo">¿En qué te gustaría trabajar?</label>
+                <select id="empleo-cargo" required>
+                    <option value="">Selecciona una opción</option>
+                    <option value="Mesero / Mesera">Mesero / Mesera</option>
+                    <option value="Barista">Barista</option>
+                    <option value="Cocina / Repostería">Cocina / Repostería</option>
+                    <option value="Tallerista">Tallerista (pintura, tarot, astrología)</option>
+                    <option value="Administrativo">Administrativo</option>
+                    <option value="Otro">Otro</option>
+                </select>
+
+                <label for="empleo-mensaje">Cuéntanos un poco de ti (opcional)</label>
+                <textarea id="empleo-mensaje" rows="4" placeholder="Tu experiencia, tu disponibilidad de horario, o por qué te gustaría trabajar aquí."></textarea>
+
+                <label for="empleo-archivo">Hoja de vida (PDF o Word, máximo 5 MB)</label>
+                <input type="file" id="empleo-archivo" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required>
+
+                <label class="campo-casilla">
+                    <input type="checkbox" id="empleo-autoriza" required>
+                    <span>Autorizo a El Jardín del Té a guardar y usar mis datos y mi hoja de vida para procesos de selección.</span>
+                </label>
+
+                <button type="submit" class="boton-primario" id="empleo-enviar">Enviar postulación</button>
+                <p class="mensaje-formulario" id="empleo-resultado" role="status" aria-live="polite"></p>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <nav class="pie-enlaces" aria-label="Enlaces del pie de página">
+            <a href="pqrs.html">PQRS</a>
+            <a href="empleo.html">Trabaja con nosotros</a>
+        </nav>
+        <p>© 2026 El Jardín del Té. Todos los derechos reservados. Aquí brillamos bonito.</p>
+    </footer>
+
+    <div class="notificacion-flotante" id="notificacion" role="status" aria-live="polite"></div>
+    <script src="conexion.js"></script>
+    <script src="logica.js"></script>
+</body>
+</html>

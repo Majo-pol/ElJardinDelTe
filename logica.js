@@ -303,6 +303,204 @@
         }
     }
 
+    // ========================================================
+    //  PQRS
+    // ========================================================
+
+    // Número de radicado, para que la persona tenga con qué
+    // reclamar después. Queda tipo PQRS-20261124-K3F9Q2.
+    function generarRadicado() {
+        const hoy = new Date();
+        const fecha = hoy.getFullYear() +
+            String(hoy.getMonth() + 1).padStart(2, '0') +
+            String(hoy.getDate()).padStart(2, '0');
+
+        const letras = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sin I, O, 0, 1
+        let aleatorio = '';
+        for (let i = 0; i < 6; i++) {
+            aleatorio += letras.charAt(Math.floor(Math.random() * letras.length));
+        }
+        return 'PQRS-' + fecha + '-' + aleatorio;
+    }
+
+    // Deja el mensaje debajo del formulario. 'tipo' pinta el color.
+    function responderEnFormulario(idElemento, texto, tipo) {
+        const caja = document.getElementById(idElemento);
+        if (!caja) return;
+        caja.textContent = texto;
+        caja.className = 'mensaje-formulario ' + (tipo || '');
+    }
+
+    function activarFormularioPQRS() {
+        const formulario = document.getElementById('form-pqrs');
+        if (!formulario) return;
+
+        const boton = document.getElementById('pqrs-enviar');
+
+        formulario.addEventListener('submit', async function (evento) {
+            evento.preventDefault();
+
+            if (typeof clienteSupabase === 'undefined' || !clienteSupabase) {
+                responderEnFormulario('pqrs-resultado',
+                    'No hay conexión con la base de datos. Escríbenos por WhatsApp mientras lo revisamos.', 'error');
+                return;
+            }
+
+            // Se bloquea el botón: sin esto, un doble clic radica la
+            // misma queja dos veces con dos números distintos.
+            boton.disabled = true;
+            boton.textContent = 'Radicando...';
+            responderEnFormulario('pqrs-resultado', '', '');
+
+            const radicado = generarRadicado();
+            const solicitud = {
+                radicado: radicado,
+                tipo: document.getElementById('pqrs-tipo').value,
+                nombre: document.getElementById('pqrs-nombre').value.trim(),
+                correo: document.getElementById('pqrs-correo').value.trim(),
+                telefono: document.getElementById('pqrs-telefono').value.trim() || null,
+                mensaje: document.getElementById('pqrs-mensaje').value.trim(),
+                autoriza_datos: document.getElementById('pqrs-autoriza').checked
+            };
+
+            const { error } = await clienteSupabase.from('pqrs').insert([solicitud]);
+
+            boton.disabled = false;
+            boton.textContent = 'Radicar solicitud';
+
+            if (error) {
+                responderEnFormulario('pqrs-resultado',
+                    'No pudimos radicar tu solicitud. Intenta de nuevo en un momento.', 'error');
+                return;
+            }
+
+            formulario.reset();
+            responderEnFormulario('pqrs-resultado',
+                '¡Listo! Tu solicitud quedó radicada con el número ' + radicado +
+                '. Guárdalo: con ese número puedes preguntarnos por tu caso.', 'exito');
+            mostrarMensajeFlotante('Solicitud radicada: ' + radicado);
+        });
+    }
+
+    // ========================================================
+    //  TRABAJA CON NOSOTROS
+    // ========================================================
+
+    const TAMANO_MAXIMO_HV = 5 * 1024 * 1024; // 5 MB
+
+    // Nombre con el que se guarda el archivo en Supabase. No se usa
+    // el nombre original: puede traer tildes, espacios o eñes que
+    // rompen la ruta, y además el nombre de una persona no tiene por
+    // qué quedar escrito en una URL. El original se guarda aparte,
+    // en la columna archivo_nombre.
+    function rutaParaHojaDeVida(nombreOriginal) {
+        const punto = nombreOriginal.lastIndexOf('.');
+        const extension = punto > -1 ? nombreOriginal.slice(punto).toLowerCase() : '.pdf';
+        const hoy = new Date();
+        const carpeta = hoy.getFullYear() + '-' + String(hoy.getMonth() + 1).padStart(2, '0');
+        const unico = Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+        return carpeta + '/' + unico + extension;
+    }
+
+    function activarFormularioEmpleo() {
+        const formulario = document.getElementById('form-empleo');
+        if (!formulario) return;
+
+        const boton = document.getElementById('empleo-enviar');
+        const campoArchivo = document.getElementById('empleo-archivo');
+
+        formulario.addEventListener('submit', async function (evento) {
+            evento.preventDefault();
+
+            if (typeof clienteSupabase === 'undefined' || !clienteSupabase) {
+                responderEnFormulario('empleo-resultado',
+                    'No hay conexión con la base de datos. Intenta más tarde.', 'error');
+                return;
+            }
+
+            const archivo = campoArchivo.files[0];
+            if (!archivo) {
+                responderEnFormulario('empleo-resultado', 'Falta adjuntar tu hoja de vida.', 'error');
+                return;
+            }
+
+            // Esta revisión es sólo para avisar rápido y bonito. La que
+            // de verdad manda es la del bucket en Supabase, que también
+            // limita tamaño y tipo de archivo.
+            if (archivo.size > TAMANO_MAXIMO_HV) {
+                const pesa = (archivo.size / 1024 / 1024).toFixed(1);
+                responderEnFormulario('empleo-resultado',
+                    'Tu archivo pesa ' + pesa + ' MB y el máximo son 5 MB. Puedes guardarlo de nuevo en PDF para que pese menos.', 'error');
+                return;
+            }
+
+            const extensionesOk = ['.pdf', '.doc', '.docx'];
+            const nombreMinuscula = archivo.name.toLowerCase();
+            const extensionValida = extensionesOk.some(function (ext) {
+                return nombreMinuscula.endsWith(ext);
+            });
+            if (!extensionValida) {
+                responderEnFormulario('empleo-resultado',
+                    'La hoja de vida debe ser un PDF o un documento de Word.', 'error');
+                return;
+            }
+
+            boton.disabled = true;
+            boton.textContent = 'Enviando...';
+            responderEnFormulario('empleo-resultado', 'Subiendo tu hoja de vida...', '');
+
+            // 1. Primero sube el archivo.
+            const ruta = rutaParaHojaDeVida(archivo.name);
+            const { error: errorArchivo } = await clienteSupabase
+                .storage
+                .from('hojas-de-vida')
+                .upload(ruta, archivo, { contentType: archivo.type, upsert: false });
+
+            if (errorArchivo) {
+                boton.disabled = false;
+                boton.textContent = 'Enviar postulación';
+                responderEnFormulario('empleo-resultado',
+                    'No pudimos subir tu hoja de vida. Revisa que sea PDF o Word y que pese menos de 5 MB.', 'error');
+                return;
+            }
+
+            // 2. Y sólo si el archivo quedó bien, se guarda la postulación.
+            //    En ese orden: si se guardara primero, una falla al subir
+            //    dejaría una postulación sin hoja de vida.
+            const postulacion = {
+                nombre: document.getElementById('empleo-nombre').value.trim(),
+                correo: document.getElementById('empleo-correo').value.trim(),
+                telefono: document.getElementById('empleo-telefono').value.trim(),
+                cargo: document.getElementById('empleo-cargo').value,
+                mensaje: document.getElementById('empleo-mensaje').value.trim() || null,
+                archivo_ruta: ruta,
+                archivo_nombre: archivo.name,
+                autoriza_datos: document.getElementById('empleo-autoriza').checked
+            };
+
+            const { error: errorDatos } = await clienteSupabase
+                .from('postulaciones')
+                .insert([postulacion]);
+
+            boton.disabled = false;
+            boton.textContent = 'Enviar postulación';
+
+            if (errorDatos) {
+                // El archivo ya está arriba pero los datos no entraron.
+                // Se borra para no dejar hojas de vida sueltas sin dueño.
+                await clienteSupabase.storage.from('hojas-de-vida').remove([ruta]);
+                responderEnFormulario('empleo-resultado',
+                    'No pudimos guardar tu postulación. Intenta de nuevo en un momento.', 'error');
+                return;
+            }
+
+            formulario.reset();
+            responderEnFormulario('empleo-resultado',
+                '¡Gracias! Recibimos tu postulación y tu hoja de vida. Te escribimos si se abre una vacante que encaje contigo.', 'exito');
+            mostrarMensajeFlotante('¡Postulación enviada!');
+        });
+    }
+
     function iniciarCarrusel() {
         const track = document.getElementById('carrusel-track');
         if (!track) return;
@@ -404,6 +602,8 @@
         activarMenuResponsive();
         activarBotonesDeLaPagina();
         activarSelectoresTamano();
+        activarFormularioPQRS();
+        activarFormularioEmpleo();
     }
 
     document.addEventListener('DOMContentLoaded', iniciarPagina);

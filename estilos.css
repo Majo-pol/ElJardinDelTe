@@ -81,21 +81,31 @@ textarea:focus-visible {
     outline-offset: 2px;
 }
 
-/* ENCABEZADO Y MENÚ SUPERIOR */
+/* ENCABEZADO Y MENÚ SUPERIOR
+   El banner va en el verde oliva de la paleta (--verde-oliva) con la
+   letra en marfil. Esa combinación da 4.89:1 de contraste, que es lo
+   que pide la norma WCAG AA para texto normal (mínimo 4.5:1).
+
+   Sobre ese verde, el dorado y el pistacho se quedan en 2.9:1 y el
+   terracota en 1.05:1 — o sea, ilegibles. Por eso el menú ya no
+   cambia de color al pasar el mouse: en vez de eso le aparece un
+   subrayado dorado y la letra se queda en marfil. El subrayado es
+   decoración al lado de un texto que sí contrasta, así que la
+   legibilidad no depende del color. */
 header {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background-color: rgba(255, 249, 242, 0.95);
+    background-color: var(--verde-oliva);
     backdrop-filter: blur(10px);
-    color: var(--verde-oscuro);
+    color: var(--marfil);
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.8rem 5%;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(47, 58, 36, 0.08);
+    box-shadow: 0 2px 14px rgba(47, 58, 36, 0.22);
     gap: 15px;
 }
 
@@ -107,7 +117,7 @@ header {
     font-size: 2.1rem;
     font-weight: 700;
     letter-spacing: 0.5px;
-    color: var(--verde-oscuro);
+    color: var(--marfil);
     cursor: pointer;
     white-space: nowrap;
     line-height: 1.1;
@@ -122,24 +132,36 @@ nav ul {
 }
 
 nav ul li a {
-    color: var(--verde-oscuro);
+    color: var(--marfil);
     text-decoration: none;
     font-weight: 600;
     font-size: 0.92rem;
+    /* El borde transparente reserva el espacio del subrayado desde ya,
+       para que al pasar el mouse el texto no se mueva un pixel. */
+    border-bottom: 2px solid transparent;
+    padding-bottom: 2px;
     transition: var(--transicion-suave);
 }
 
-nav ul li a:hover {
-    color: var(--terracota-fuerte);
+nav ul li a:hover,
+nav ul li a:focus-visible {
+    border-bottom-color: var(--dorado);
+}
+
+/* El foco general del sitio es terracota, que sobre el verde del
+   banner no se ve (1.05:1). Aquí se cambia a dorado. */
+header a:focus-visible,
+header button:focus-visible {
+    outline-color: var(--dorado);
 }
 
 /* Botón hamburguesa: sólo aparece en pantallas pequeñas */
 .menu-boton {
     display: none;
     background: none;
-    border: 2px solid var(--verde-oscuro);
+    border: 2px solid var(--marfil);
     border-radius: 8px;
-    color: var(--verde-oscuro);
+    color: var(--marfil);
     font-size: 1.5rem;
     line-height: 1;
     padding: 4px 10px;
@@ -176,6 +198,12 @@ nav ul li a:hover {
 .hero-seccion p {
     font-size: clamp(1rem, 2.2vw, 1.2rem);
     max-width: 620px;
+    /* El texto de portada son dos párrafos: entre ellos va poco
+       espacio, y el grande se deja sólo antes del botón. */
+    margin-bottom: 14px;
+}
+
+.hero-seccion p:last-of-type {
     margin-bottom: 30px;
 }
 
@@ -583,6 +611,182 @@ footer {
     margin-top: 80px;
 }
 
+/* Enlaces del pie: PQRS y Trabaja con nosotros.
+   El dorado sobre el verde oscuro del pie da 6.76:1, bastante más
+   de lo que pide la norma. El subrayado va desde el principio para
+   que se note que son enlaces y no títulos. */
+.pie-enlaces {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px 26px;
+    margin-bottom: 18px;
+}
+
+.pie-enlaces a {
+    color: var(--dorado);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    transition: var(--transicion-suave);
+}
+
+.pie-enlaces a:hover {
+    color: var(--verde-pistacho);
+}
+
+footer a:focus-visible {
+    outline-color: var(--dorado);
+}
+
+/* Párrafo de entrada de una página de formulario */
+.texto-intro {
+    max-width: 620px;
+    margin: -25px auto 35px;
+    text-align: center;
+    color: var(--texto-suave);
+}
+
+/* Casilla de autorización de datos: la casilla a la izquierda y el
+   texto al lado, no debajo. align-items a flex-start para que con
+   dos renglones la casilla quede arriba y no en la mitad. */
+.campo-casilla {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-weight: 500 !important;
+    font-size: 0.88rem !important;
+    line-height: 1.45;
+    color: var(--texto-suave) !important;
+    margin-bottom: 0 !important;
+    cursor: pointer;
+}
+
+.campo-casilla input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    margin-top: 2px;
+    accent-color: var(--verde-oliva);
+    cursor: pointer;
+}
+
+/* El botón de "Examinar" del campo de archivo lo dibuja el sistema
+   operativo y no se puede estilizar; lo que sí se puede es la caja
+   que lo contiene, para que combine con los demás campos. */
+.formulario-reserva input[type="file"] {
+    padding: 10px 12px;
+    cursor: pointer;
+}
+
+.formulario-reserva input[type="file"]::file-selector-button {
+    font-family: var(--fuente-cuerpo);
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #FFFFFF;
+    background-color: var(--verde-oliva);
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* Respuesta del formulario (radicado, error, confirmación) */
+.mensaje-formulario {
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.mensaje-formulario:empty {
+    display: none;
+}
+
+.mensaje-formulario.exito {
+    color: var(--verde-oliva);
+    background-color: rgba(182, 203, 120, 0.22);
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+.mensaje-formulario.error {
+    color: var(--terracota-fuerte);
+    background-color: rgba(216, 138, 118, 0.18);
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+/* Botón de enviar mientras está procesando */
+.boton-primario:disabled {
+    opacity: 0.6;
+    cursor: wait;
+    transform: none;
+}
+
+/* ==========================================
+   BUZÓN DEL PANEL DE ADMIN
+   Cada PQRS y cada postulación es un <details>: el resumen se ve
+   siempre y el detalle sólo al hacer clic, para que una lista larga
+   siga siendo manejable.
+   ========================================== */
+.nota-admin {
+    font-size: 0.85rem;
+    color: var(--texto-suave);
+    margin-bottom: 14px;
+}
+
+.tarjeta-solicitud {
+    border: 1px solid var(--linea-tenue);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    background-color: var(--marfil);
+}
+
+.tarjeta-solicitud summary {
+    cursor: pointer;
+    font-size: 0.93rem;
+    color: var(--verde-oscuro);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.tarjeta-solicitud[open] summary {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--linea-tenue);
+}
+
+.solicitud-meta {
+    font-size: 0.78rem;
+    color: var(--texto-suave);
+    font-weight: 500;
+}
+
+.tarjeta-solicitud p {
+    font-size: 0.88rem;
+    margin-bottom: 6px;
+}
+
+/* El mensaje lo escribió un visitante: puede venir con saltos de
+   línea y con palabras larguísimas sin espacios. pre-line respeta
+   los saltos y overflow-wrap evita que una palabra kilométrica
+   estire la tarjeta. */
+.solicitud-mensaje {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    background-color: var(--rosa-porcelana);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin: 10px 0 12px;
+}
+
 .notificacion-flotante {
     position: fixed;
     bottom: 20px;
@@ -696,7 +900,10 @@ footer {
 
     nav ul li {
         width: 100%;
-        border-top: 1px solid var(--linea-tenue);
+        /* Línea clara translúcida: la --linea-tenue original se hizo
+           para fondos claros y sobre el verde del banner queda casi
+           blanca. */
+        border-top: 1px solid rgba(255, 249, 242, 0.22);
     }
 
     nav ul li a {
