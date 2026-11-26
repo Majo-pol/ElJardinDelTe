@@ -61,6 +61,7 @@
         if (typeof clienteSupabase === 'undefined' || !clienteSupabase) {
             mostrarCatalogoProductos();
             mostrarActividades();
+            llenarSelectorActividades();
             return;
         }
 
@@ -85,8 +86,8 @@
             mostrarCatalogoProductos();
         }
 
-        // 2. Consultar Actividades en Supabase
-        if (document.getElementById('contenedor-actividades')) {
+        // 2. Consultar Actividades en Supabase (para actividades.html y contacto.html)
+        if (document.getElementById('contenedor-actividades') || document.getElementById('actividad-reserva')) {
             const { data: actBD, error: errAct } = await clienteSupabase
                 .from('actividades')
                 .select('*')
@@ -104,6 +105,41 @@
                 });
             }
             mostrarActividades();
+            llenarSelectorActividades();
+        }
+
+        // 3. Consultar Menú en Supabase (para menu.html)
+        if (document.querySelector('[data-categoria]')) {
+            const { data: menuBD, error: errMenu } = await clienteSupabase
+                .from('menu_items')
+                .select('*')
+                .order('id', { ascending: true });
+
+            if (!errMenu && menuBD && menuBD.length > 0) {
+                mostrarMenuDinamico(menuBD);
+            }
+        }
+
+        // 4. Consultar Fotos del Carrusel en Supabase
+        const trackCarrusel = document.getElementById('carrusel-track');
+        if (trackCarrusel) {
+            const { data: fotosBD, error: errFotos } = await clienteSupabase
+                .from('carrusel_fotos')
+                .select('*')
+                .order('id', { ascending: true });
+
+            if (!errFotos && fotosBD && fotosBD.length > 0) {
+                trackCarrusel.textContent = '';
+                fotosBD.forEach(function (f) {
+                    const img = document.createElement('img');
+                    img.src = f.imagen_url;
+                    img.alt = f.descripcion || 'El Jardín del Té - Salón';
+                    img.className = 'carrusel-img';
+                    img.loading = 'lazy';
+                    trackCarrusel.appendChild(img);
+                });
+                trackCarrusel.style.transform = 'translateX(0px)';
+            }
         }
     }
 
@@ -211,6 +247,89 @@
         });
     }
 
+    function llenarSelectorActividades() {
+        const selector = document.getElementById('actividad-reserva');
+        if (!selector) return;
+
+        selector.innerHTML = '';
+
+        const optMesa = document.createElement('option');
+        optMesa.value = 'Solo reserva de mesa';
+        optMesa.textContent = 'Solo reserva de mesa (Sin actividad)';
+        selector.appendChild(optMesa);
+
+        calendarioActividades.forEach(function (actividad) {
+            const opcion = document.createElement('option');
+            const texto = actividad.titulo + ' (' + actividad.horario + ')';
+            opcion.value = texto;
+            opcion.textContent = texto;
+            selector.appendChild(opcion);
+        });
+
+        const optOtro = document.createElement('option');
+        optOtro.value = 'Otro';
+        optOtro.textContent = 'Otro (Especificar)';
+        selector.appendChild(optOtro);
+    }
+
+    function mostrarMenuDinamico(itemsBD) {
+        const listas = document.querySelectorAll('.lista-menu[data-categoria]');
+        if (!listas.length) return;
+
+        listas.forEach(function (ul) {
+            const categoria = ul.getAttribute('data-categoria');
+            const itemsCategoria = itemsBD.filter(function (item) {
+                return item.categoria === categoria;
+            });
+
+            if (itemsCategoria.length === 0) return;
+
+            ul.textContent = '';
+
+            itemsCategoria.forEach(function (item) {
+                const li = document.createElement('li');
+                const span = document.createElement('span');
+                span.textContent = item.nombre;
+
+                // Si el detalle tiene opciones separadas por "|" (ej: Pequeño:9000 | Tetera:33000)
+                if (item.detalle && item.detalle.includes('|')) {
+                    li.className = 'item-bebida';
+                    const select = document.createElement('select');
+                    select.className = 'selector-tamano';
+
+                    const opciones = item.detalle.split('|');
+                    opciones.forEach(function (op) {
+                        const partes = op.split(':');
+                        const option = document.createElement('option');
+                        option.textContent = partes[0].trim();
+                        option.value = partes[1] ? partes[1].trim() : item.precio;
+                        select.appendChild(option);
+                    });
+
+                    const strong = document.createElement('strong');
+                    strong.className = 'precio-bebida';
+                    const precioInicial = select.options[0] ? select.options[0].value : item.precio;
+                    strong.textContent = '$' + Number(precioInicial).toLocaleString('es-CO');
+
+                    li.appendChild(span);
+                    li.appendChild(select);
+                    li.appendChild(strong);
+                } else {
+                    if (item.detalle) {
+                        span.textContent = item.nombre + ' (' + item.detalle + ')';
+                    }
+                    const strong = document.createElement('strong');
+                    strong.textContent = '$' + Number(item.precio).toLocaleString('es-CO');
+
+                    li.appendChild(span);
+                    li.appendChild(strong);
+                }
+
+                ul.appendChild(li);
+            });
+        });
+    }
+
     function mostrarMensajeFlotante(mensajeTexto) {
         const elementoNotificacion = document.getElementById('notificacion');
         if (!elementoNotificacion) return;
@@ -276,20 +395,81 @@
 
         const formularioReserva = document.getElementById('form-reserva');
         if (formularioReserva) {
+            const inputTelefono = document.getElementById('telefono-reserva');
+            const inputFecha = document.getElementById('fecha-reserva');
+            const selectActividad = document.getElementById('actividad-reserva');
+            const contenedorOtra = document.getElementById('contenedor-otra-actividad');
+            const inputOtra = document.getElementById('otra-actividad-reserva');
+
+            // 1. Solo números enteros y máximo 10 dígitos
+            if (inputTelefono) {
+                inputTelefono.addEventListener('input', function () {
+                    this.value = this.value.replace(/\D/g, '').slice(0, 10);
+                });
+            }
+
+            // 2. Bloquear fechas anteriores al día actual (hora local)
+            function obtenerFechaHoyLocal() {
+                const hoy = new Date();
+                const anio = hoy.getFullYear();
+                const mes = String(hoy.getMonth() + 1).padStart(2, '0');
+                const dia = String(hoy.getDate()).padStart(2, '0');
+                return anio + '-' + mes + '-' + dia;
+            }
+
+            if (inputFecha) {
+                inputFecha.setAttribute('min', obtenerFechaHoyLocal());
+            }
+
+            // 3. Mostrar u ocultar el campo extra cuando elige "Otro"
+            if (selectActividad && contenedorOtra && inputOtra) {
+                selectActividad.addEventListener('change', function () {
+                    if (this.value === 'Otro') {
+                        contenedorOtra.style.display = 'flex';
+                        inputOtra.required = true;
+                        inputOtra.focus();
+                    } else {
+                        contenedorOtra.style.display = 'none';
+                        inputOtra.required = false;
+                        inputOtra.value = '';
+                    }
+                });
+            }
+
+            // 4. Validación final y envío a WhatsApp
             formularioReserva.addEventListener('submit', function (evento) {
                 evento.preventDefault();
 
-                const nombre = document.getElementById('nombre-reserva').value;
-                const telefono = document.getElementById('telefono-reserva').value;
-                const fecha = document.getElementById('fecha-reserva').value;
+                const nombre = document.getElementById('nombre-reserva').value.trim();
+                const telefono = inputTelefono.value.trim();
+                const fecha = inputFecha.value;
                 const personas = document.getElementById('personas-reserva').value;
-                const notas = document.getElementById('notas-reserva').value;
+                const notas = document.getElementById('notas-reserva').value.trim();
 
-                let textoReserva = '¡Hola El Jardín del Té! Quiero reservar una mesa:\n\n' +
+                if (!/^\d{10}$/.test(telefono)) {
+                    mostrarMensajeFlotante('El teléfono debe tener exactamente 10 dígitos numéricos.');
+                    inputTelefono.focus();
+                    return;
+                }
+
+                if (fecha < obtenerFechaHoyLocal()) {
+                    mostrarMensajeFlotante('No puedes seleccionar una fecha anterior a hoy.');
+                    inputFecha.focus();
+                    return;
+                }
+
+                let actividadElegida = selectActividad ? selectActividad.value : 'Solo reserva de mesa';
+                if (actividadElegida === 'Otro' && inputOtra) {
+                    actividadElegida = 'Otro: ' + inputOtra.value.trim();
+                }
+
+                let textoReserva = '¡Hola El Jardín del Té! Quiero reservar:\n\n' +
                     '• *Nombre:* ' + nombre + '\n' +
                     '• *Teléfono:* ' + telefono + '\n' +
                     '• *Fecha:* ' + fecha + '\n' +
-                    '• *Personas:* ' + personas;
+                    '• *Personas:* ' + personas + '\n' +
+                    '• *Plan / Actividad:* ' + actividadElegida;
+
                 if (notas) {
                     textoReserva += '\n• *Notas:* ' + notas;
                 }
@@ -298,6 +478,8 @@
                 setTimeout(function () {
                     window.open(enlaceWhatsApp(textoReserva), '_blank');
                     formularioReserva.reset();
+                    if (contenedorOtra) contenedorOtra.style.display = 'none';
+                    if (inputOtra) inputOtra.required = false;
                 }, 1000);
             });
         }
@@ -307,15 +489,13 @@
     //  PQRS
     // ========================================================
 
-    // Número de radicado, para que la persona tenga con qué
-    // reclamar después. Queda tipo PQRS-20261124-K3F9Q2.
     function generarRadicado() {
         const hoy = new Date();
         const fecha = hoy.getFullYear() +
             String(hoy.getMonth() + 1).padStart(2, '0') +
             String(hoy.getDate()).padStart(2, '0');
 
-        const letras = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sin I, O, 0, 1
+        const letras = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
         let aleatorio = '';
         for (let i = 0; i < 6; i++) {
             aleatorio += letras.charAt(Math.floor(Math.random() * letras.length));
@@ -323,7 +503,6 @@
         return 'PQRS-' + fecha + '-' + aleatorio;
     }
 
-    // Deja el mensaje debajo del formulario. 'tipo' pinta el color.
     function responderEnFormulario(idElemento, texto, tipo) {
         const caja = document.getElementById(idElemento);
         if (!caja) return;
@@ -346,8 +525,6 @@
                 return;
             }
 
-            // Se bloquea el botón: sin esto, un doble clic radica la
-            // misma queja dos veces con dos números distintos.
             boton.disabled = true;
             boton.textContent = 'Radicando...';
             responderEnFormulario('pqrs-resultado', '', '');
@@ -388,11 +565,6 @@
 
     const TAMANO_MAXIMO_HV = 5 * 1024 * 1024; // 5 MB
 
-    // Nombre con el que se guarda el archivo en Supabase. No se usa
-    // el nombre original: puede traer tildes, espacios o eñes que
-    // rompen la ruta, y además el nombre de una persona no tiene por
-    // qué quedar escrito en una URL. El original se guarda aparte,
-    // en la columna archivo_nombre.
     function rutaParaHojaDeVida(nombreOriginal) {
         const punto = nombreOriginal.lastIndexOf('.');
         const extension = punto > -1 ? nombreOriginal.slice(punto).toLowerCase() : '.pdf';
@@ -424,9 +596,6 @@
                 return;
             }
 
-            // Esta revisión es sólo para avisar rápido y bonito. La que
-            // de verdad manda es la del bucket en Supabase, que también
-            // limita tamaño y tipo de archivo.
             if (archivo.size > TAMANO_MAXIMO_HV) {
                 const pesa = (archivo.size / 1024 / 1024).toFixed(1);
                 responderEnFormulario('empleo-resultado',
@@ -449,7 +618,6 @@
             boton.textContent = 'Enviando...';
             responderEnFormulario('empleo-resultado', 'Subiendo tu hoja de vida...', '');
 
-            // 1. Primero sube el archivo.
             const ruta = rutaParaHojaDeVida(archivo.name);
             const { error: errorArchivo } = await clienteSupabase
                 .storage
@@ -464,9 +632,6 @@
                 return;
             }
 
-            // 2. Y sólo si el archivo quedó bien, se guarda la postulación.
-            //    En ese orden: si se guardara primero, una falla al subir
-            //    dejaría una postulación sin hoja de vida.
             const postulacion = {
                 nombre: document.getElementById('empleo-nombre').value.trim(),
                 correo: document.getElementById('empleo-correo').value.trim(),
@@ -486,8 +651,6 @@
             boton.textContent = 'Enviar postulación';
 
             if (errorDatos) {
-                // El archivo ya está arriba pero los datos no entraron.
-                // Se borra para no dejar hojas de vida sueltas sin dueño.
                 await clienteSupabase.storage.from('hojas-de-vida').remove([ruta]);
                 responderEnFormulario('empleo-resultado',
                     'No pudimos guardar tu postulación. Intenta de nuevo en un momento.', 'error');
@@ -503,29 +666,31 @@
 
     function iniciarCarrusel() {
         const track = document.getElementById('carrusel-track');
-        if (!track) return;
-
-        const imagenes = Array.from(track.children);
         const botonNext = document.getElementById('carrusel-next');
         const botonPrev = document.getElementById('carrusel-prev');
-        if (!imagenes.length || !botonNext || !botonPrev) return;
+        if (!track || !botonNext || !botonPrev) return;
 
         let indiceActual = 0;
 
         function actualizarPosicionCarrusel() {
+            const imagenes = track.children;
+            if (!imagenes.length) return;
+            if (indiceActual >= imagenes.length) indiceActual = 0;
             const anchoImagen = imagenes[0].getBoundingClientRect().width;
             track.style.transform = 'translateX(-' + (indiceActual * anchoImagen) + 'px)';
         }
 
         botonNext.addEventListener('click', function () {
-            indiceActual++;
-            if (indiceActual >= imagenes.length) indiceActual = 0;
+            const total = track.children.length;
+            if (!total) return;
+            indiceActual = (indiceActual + 1) % total;
             actualizarPosicionCarrusel();
         });
 
         botonPrev.addEventListener('click', function () {
-            indiceActual--;
-            if (indiceActual < 0) indiceActual = imagenes.length - 1;
+            const total = track.children.length;
+            if (!total) return;
+            indiceActual = (indiceActual - 1 + total) % total;
             actualizarPosicionCarrusel();
         });
 
@@ -533,18 +698,16 @@
     }
 
     function activarSelectoresTamano() {
-        const selectoresTamano = document.querySelectorAll('.selector-tamano');
-        selectoresTamano.forEach(function (selector) {
-            selector.addEventListener('change', function () {
-                const nuevoPrecio = this.value;
-                const contenedorBebida = this.closest('li');
-                if (contenedorBebida) {
-                    const precioElemento = contenedorBebida.querySelector('strong');
-                    if (precioElemento) {
-                        precioElemento.textContent = '$' + Number(nuevoPrecio).toLocaleString('es-CO');
-                    }
+        document.addEventListener('change', function (evento) {
+            if (!evento.target.classList.contains('selector-tamano')) return;
+            const nuevoPrecio = evento.target.value;
+            const contenedorBebida = evento.target.closest('li');
+            if (contenedorBebida) {
+                const precioElemento = contenedorBebida.querySelector('strong');
+                if (precioElemento) {
+                    precioElemento.textContent = '$' + Number(nuevoPrecio).toLocaleString('es-CO');
                 }
-            });
+            }
         });
     }
 

@@ -11,7 +11,10 @@
 </head>
 <body>
     <header>
-        <div class="logo-contenedor" id="boton-inicio-logo">El Jardín del Té</div>
+        <div class="logo-contenedor" id="boton-inicio-logo">
+            <img src="imagenes/logo.jpg" alt="Logo El Jardín del Té" class="logo-img">
+            <span>El Jardín del Té</span>
+        </div>
         <button class="menu-boton" id="menu-boton" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu-navegacion">☰</button>
         <nav>
             <ul id="menu-navegacion">
@@ -19,7 +22,7 @@
                 <li><a href="nosotros.html">Nosotros</a></li>
                 <li><a href="destacado.html">Nuestros Destacados</a></li>
                 <li><a href="menu.html">Menú</a></li>
-                <li><a href="actividades.html">Actividades</a></li>
+                <li><a href="actividades.html">Experiencias</a></li>
                 <li><a href="contacto.html">Reservas y contacto</a></li>
                 <li><a href="admin.html">Admin</a></li>
             </ul>
@@ -47,7 +50,7 @@
                         <h3>Tés Puros e Infusiones Botánicas</h3>
                         <span>Elige el tamaño en el desplegable</span>
                     </div>
-                    <ul class="lista-menu">
+                    <ul class="lista-menu" data-categoria="Tés e Infusiones">
                         <li class="item-bebida">
                             <span>Té Rojo</span>
                             <select class="selector-tamano">
@@ -147,7 +150,7 @@
                         <h3>Cafés, Chai y Bebidas Calientes</h3>
                         <span>Preparaciones artesanales</span>
                     </div>
-                    <ul class="lista-menu">
+                    <ul class="lista-menu" data-categoria="Cafés y Latte">
                         <li><span>Café</span> <strong>$6.500</strong></li>
                         <li><span>Capuchino</span> <strong>$10.000</strong></li>
                         <li><span>Latte</span> <strong>$10.000</strong></li>
@@ -173,7 +176,7 @@
                         <h3>Bebidas Frías, Chocobombas y Cacao</h3>
                         <span>Refrescantes y chocolatosas</span>
                     </div>
-                    <ul class="lista-menu">
+                    <ul class="lista-menu" data-categoria="Fríos y Cacao">
                         <li class="item-bebida">
                             <span>Chocobombas</span>
                             <select class="selector-tamano">
@@ -198,7 +201,7 @@
                         <h3>Para Acompañar: Brunch y Postres</h3>
                         <span>Horneados y dulces artesanales</span>
                     </div>
-                    <ul class="lista-menu">
+                    <ul class="lista-menu" data-categoria="Brunch y Postres">
                         <li><span>Galleta chips de chocolate</span> <strong>$8.000</strong></li>
                         <li><span>Torta de Naranja Amapola</span> <strong>$11.000</strong></li>
                         <li><span>Torta de Limón Arándanos</span> <strong>$11.000</strong></li>
@@ -240,6 +243,9 @@
         </nav>
         <p>© 2026 El Jardín del Té. Todos los derechos reservados. Aquí brillamos bonito.</p>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="conexion.js"></script>
     <script src="logica.js"></script>
 </body>
 </html>

@@ -12,7 +12,10 @@
 </head>
 <body>
     <header>
-        <div class="logo-contenedor" id="boton-inicio-logo">El Jardín del Té — Admin</div>
+        <div class="logo-contenedor" id="boton-inicio-logo">
+            <img src="imagenes/logo.jpg" alt="Logo El Jardín del Té" class="logo-img">
+            <span>El Jardín del Té - Admin</span>
+        </div>
         <nav>
             <ul>
                 <li><a href="index.html">Volver al Sitio Web</a></li>
@@ -37,75 +40,254 @@
             </form>
         </section>
 
-        <!-- 2. PANEL DE GESTIÓN (Visible tras iniciar sesión) -->
+        <!-- 2. PANEL DIDÁCTICO POR DIAPOSITIVAS -->
         <section id="seccion-panel" class="seccion-bloque" style="display: none;">
-            <h2 class="seccion-titulo">Panel de Contenidos</h2>
+            <h2 class="seccion-titulo">Panel Interactivo de Contenidos</h2>
 
-            <div class="menu-columnas">
-                <!-- Columna 1: Gestionar Productos Destacados -->
-                <div class="menu-categoria">
-                    <h3>Agregar Producto Destacado</h3>
-                    <form id="form-nuevo-producto" class="formulario-reserva" style="padding: 10px 0; box-shadow: none;">
-                        <label>Nombre del plato / bebida</label>
-                        <input type="text" id="prod-nombre" required placeholder="Ej: Matcha con Waffle">
+            <div class="admin-nav-diapositivas" role="tablist">
+                <button type="button" class="diapo-tab activa" data-diapo="0">1. Destacados</button>
+                <button type="button" class="diapo-tab" data-diapo="1">2. Actividades</button>
+                <button type="button" class="diapo-tab" data-diapo="2">3. Menú</button>
+                <button type="button" class="diapo-tab" data-diapo="3">4. Buzón (PQRS / Empleo)</button>
+                <button type="button" class="diapo-tab" data-diapo="4">5. Carrusel del Salón</button>
+            </div>
 
-                        <label>Descripción</label>
-                        <textarea id="prod-desc" rows="2" required placeholder="Descripción breve"></textarea>
+            <!-- DIAPOSITIVA 1: PRODUCTOS DESTACADOS -->
+            <div class="diapositiva-admin activa" data-diapo="0">
+                <div class="diapo-encabezado">
+                    <h3>Paso 1: Productos Destacados</h3>
+                    <p>Escribe los datos a la izquierda y revisa en tiempo real cómo se verá la tarjeta en tu página antes de guardarla.</p>
+                </div>
 
-                        <label>Precio (COP)</label>
+                <div class="admin-editor-grid">
+                    <form id="form-nuevo-producto" class="formulario-reserva" style="margin: 0; padding: 0; box-shadow: none;">
+                        <label for="prod-nombre">Nombre del plato o bebida</label>
+                        <input type="text" id="prod-nombre" required placeholder="Ej: Matcha Latte con Waffle">
+
+                        <label for="prod-desc">Descripción breve</label>
+                        <textarea id="prod-desc" rows="2" required placeholder="Ej: Té matcha ceremonial con waffle belga y frutos rojos."></textarea>
+
+                        <label for="prod-precio">Precio (COP - solo números)</label>
                         <input type="number" id="prod-precio" required placeholder="Ej: 32000">
 
-                        <label>Ruta o URL de la foto</label>
-                        <input type="text" id="prod-img" required placeholder="imagenes/producto-01.jpg o https://...">
+                        <label for="prod-img">Foto (ruta local o enlace web)</label>
+                        <input type="text" id="prod-img" required placeholder="imagenes/producto-01.jpg">
 
-                        <button type="submit" class="boton-primario">Guardar Producto</button>
+                        <div class="acciones-form-admin">
+                            <button type="submit" id="btn-submit-prod" class="boton-primario">Guardar Producto</button>
+                            <button type="button" id="btn-cancelar-prod" class="btn-cancelar">Cancelar edición</button>
+                        </div>
                     </form>
 
-                    <h3 style="margin-top: 25px;">Productos Actuales</h3>
-                    <ul class="lista-menu" id="lista-admin-productos"></ul>
+                    <div class="caja-vista-previa">
+                        <span class="etiqueta-previa">Vista previa en vivo</span>
+                        <div class="tarjeta-producto">
+                            <img id="prev-prod-img" src="imagenes/producto-01.jpg" alt="Vista previa" class="tarjeta-imagen">
+                            <div class="tarjeta-contenido">
+                                <div>
+                                    <h3 id="prev-prod-nombre">Nombre de tu producto</h3>
+                                    <p id="prev-prod-desc">Aquí aparecerá la descripción apetitosa que escribas para tus clientes.</p>
+                                </div>
+                                <div class="precio-y-accion">
+                                    <span class="precio" id="prev-prod-precio">$0</span>
+                                    <span class="etiqueta-sitio">Consumo en mesa</span>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="previa-nota">Así se verá en la sección "Nuestros Destacados".</p>
+                    </div>
                 </div>
 
-                <!-- Columna 2: Gestionar Calendario de Actividades -->
-                <div class="menu-categoria">
-                    <h3>Agregar Actividad / Taller</h3>
-                    <form id="form-nueva-actividad" class="formulario-reserva" style="padding: 10px 0; box-shadow: none;">
-                        <label>Título de la actividad</label>
-                        <input type="text" id="act-titulo" required placeholder="Ej: Taller de Kintsugi">
-
-                        <label>Fecha / Horario</label>
-                        <input type="text" id="act-horario" required placeholder="Ej: Sábado 28 Nov - 3:00 PM">
-
-                        <label>Descripción</label>
-                        <textarea id="act-desc" rows="2" required placeholder="Detalles del taller"></textarea>
-
-                        <label>Ruta o URL de la foto</label>
-                        <input type="text" id="act-img" required placeholder="imagenes/actividad-01.jpg o https://...">
-
-                        <button type="submit" class="boton-primario">Guardar Actividad</button>
-                    </form>
-
-                    <h3 style="margin-top: 25px;">Actividades Actuales</h3>
-                    <ul class="lista-menu" id="lista-admin-actividades"></ul>
+                <div class="admin-lista-bloque">
+                    <h4>Productos publicados actualmente</h4>
+                    <div id="lista-admin-productos"></div>
                 </div>
             </div>
-        </section>
 
-        <!-- 3. BUZÓN: PQRS Y POSTULACIONES (Visible tras iniciar sesión) -->
-        <section id="seccion-buzon" class="seccion-bloque" style="display: none;">
-            <h2 class="seccion-titulo">Buzón de Solicitudes</h2>
-
-            <div class="menu-columnas">
-                <div class="menu-categoria">
-                    <h3>PQRS recibidas</h3>
-                    <p class="nota-admin" id="contador-pqrs">Cargando...</p>
-                    <div id="lista-admin-pqrs"></div>
+            <!-- DIAPOSITIVA 2: ACTIVIDADES Y TALLERES -->
+            <div class="diapositiva-admin" data-diapo="1">
+                <div class="diapo-encabezado">
+                    <h3>Paso 2: Calendario de Actividades</h3>
+                    <p>Las actividades y fechas que publiques aquí aparecerán tanto en Experiencias/Actividades como en el formulario de Reservas.</p>
                 </div>
 
-                <div class="menu-categoria">
-                    <h3>Postulaciones de empleo</h3>
-                    <p class="nota-admin" id="contador-postulaciones">Cargando...</p>
-                    <div id="lista-admin-postulaciones"></div>
+                <div class="admin-editor-grid">
+                    <form id="form-nueva-actividad" class="formulario-reserva" style="margin: 0; padding: 0; box-shadow: none;">
+                        <label for="act-titulo">Título de la actividad</label>
+                        <input type="text" id="act-titulo" required placeholder="Ej: Taller de Kintsugi">
+
+                        <label for="act-horario">Fecha y horario</label>
+                        <input type="text" id="act-horario" required placeholder="Ej: Sábado 28 Nov - 3:00 PM">
+
+                        <label for="act-desc">Descripción</label>
+                        <textarea id="act-desc" rows="3" required placeholder="Qué incluye el taller, materiales, cupos..."></textarea>
+
+                        <label for="act-img">Foto (ruta local o enlace web)</label>
+                        <input type="text" id="act-img" required placeholder="imagenes/actividad-01.jpg">
+
+                        <div class="acciones-form-admin">
+                            <button type="submit" id="btn-submit-act" class="boton-primario">Guardar Actividad</button>
+                            <button type="button" id="btn-cancelar-act" class="btn-cancelar">Cancelar edición</button>
+                        </div>
+                    </form>
+
+                    <div class="caja-vista-previa">
+                        <span class="etiqueta-previa">Vista previa en vivo</span>
+                        <div class="tarjeta-actividad">
+                            <img id="prev-act-img" src="imagenes/actividad-01.jpg" alt="Vista previa" class="actividad-imagen">
+                            <div class="actividad-cuerpo">
+                                <div>
+                                    <span class="fecha-evento" id="prev-act-horario">Fecha por definir</span>
+                                    <h3 id="prev-act-titulo">Título del taller</h3>
+                                    <p id="prev-act-desc">Aquí verás los detalles de tu actividad tal como los leerán los clientes.</p>
+                                </div>
+                                <button type="button" class="boton-actividad-wa" style="pointer-events: none;">Reservar cupo por WhatsApp</button>
+                            </div>
+                        </div>
+                        <p class="previa-nota">Así se verá en "Actividades" y en el selector de "Reservas".</p>
+                    </div>
                 </div>
+
+                <div class="admin-lista-bloque">
+                    <h4>Actividades publicadas actualmente</h4>
+                    <div id="lista-admin-actividades"></div>
+                </div>
+            </div>
+
+            <!-- DIAPOSITIVA 3: MENÚ COMPLETO -->
+            <div class="diapositiva-admin" data-diapo="2">
+                <div class="diapo-encabezado">
+                    <h3>Paso 3: Gestión Rápida del Menú</h3>
+                    <p>Agrega, edita o quita bebidas y postres en segundos. Elige la hoja del librito y mira la vista previa al instante.</p>
+                </div>
+
+                <div class="admin-editor-grid">
+                    <form id="form-nuevo-menu" class="formulario-reserva" style="margin: 0; padding: 0; box-shadow: none;">
+                        <label for="menu-categoria">Página del menú</label>
+                        <select id="menu-categoria" required>
+                            <option value="Tés e Infusiones">Tés e Infusiones</option>
+                            <option value="Cafés y Latte">Cafés y Latte</option>
+                            <option value="Fríos y Cacao">Fríos y Cacao</option>
+                            <option value="Brunch y Postres">Brunch y Postres</option>
+                        </select>
+
+                        <label for="menu-nombre">Nombre del producto</label>
+                        <input type="text" id="menu-nombre" required placeholder="Ej: Té Chai con Leche de Almendras">
+
+                        <label for="menu-detalle">Tamaño, sabores o detalle (opcional)</label>
+                        <input type="text" id="menu-detalle" placeholder="Ej: 12 oz (o varios tamaños: Pequeño:9000 | Tetera:33000)">
+
+                        <label for="menu-precio">Precio base (COP - solo números)</label>
+                        <input type="number" id="menu-precio" required placeholder="Ej: 14500">
+
+                        <div class="acciones-form-admin">
+                            <button type="submit" id="btn-submit-menu" class="boton-primario">Agregar al Menú</button>
+                            <button type="button" id="btn-cancelar-menu" class="btn-cancelar">Cancelar edición</button>
+                        </div>
+                    </form>
+
+                    <div class="caja-vista-previa">
+                        <span class="etiqueta-previa">Vista previa en el librito</span>
+                        <div class="previa-hoja-menu">
+                            <h4 id="prev-menu-categoria">Tés e Infusiones</h4>
+                            <div class="fila-menu-previa">
+                                <div>
+                                    <span id="prev-menu-nombre" style="font-weight: 600;">Nombre del producto</span>
+                                    <small id="prev-menu-detalle">Tamaño o detalle opcional</small>
+                                </div>
+                                <strong id="prev-menu-precio">$0</strong>
+                            </div>
+                        </div>
+                        <p class="previa-nota">Así aparecerá esta línea dentro de tu menú interactivo.</p>
+                    </div>
+                </div>
+
+                <div class="admin-lista-bloque">
+                    <div class="filtro-categoria-admin">
+                        <h4 style="margin: 0;">Ítems actuales del menú:</h4>
+                        <select id="filtro-menu-admin">
+                            <option value="Todas">Ver todas las categorías</option>
+                            <option value="Tés e Infusiones">Tés e Infusiones</option>
+                            <option value="Cafés y Latte">Cafés y Latte</option>
+                            <option value="Fríos y Cacao">Fríos y Cacao</option>
+                            <option value="Brunch y Postres">Brunch y Postres</option>
+                        </select>
+                        <input
+                            type="search"
+                            id="buscador-menu-admin"
+                            placeholder="Buscar producto (ej: matcha, waffle, té...)"
+                        >
+                    </div>
+                    <div id="lista-admin-menu"></div>
+                </div>
+            </div>
+
+            <!-- DIAPOSITIVA 4: BUZÓN (PQRS Y EMPLEO) -->
+            <div class="diapositiva-admin" data-diapo="3">
+                <div class="diapo-encabezado">
+                    <h3>Paso 4: Buzón de Solicitudes</h3>
+                    <p>Revisa aquí los mensajes de PQRS y las hojas de vida recibidas desde tu sitio web.</p>
+                </div>
+
+                <div class="menu-columnas">
+                    <div class="menu-categoria" style="box-shadow: none; background: var(--marfil);">
+                        <h3>PQRS recibidas</h3>
+                        <p class="nota-admin" id="contador-pqrs">Cargando...</p>
+                        <div id="lista-admin-pqrs"></div>
+                    </div>
+
+                    <div class="menu-categoria" style="box-shadow: none; background: var(--marfil);">
+                        <h3>Postulaciones de empleo</h3>
+                        <p class="nota-admin" id="contador-postulaciones">Cargando...</p>
+                        <div id="lista-admin-postulaciones"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DIAPOSITIVA 5: CARRUSEL CONOCE EL SALÓN -->
+            <div class="diapositiva-admin" data-diapo="4">
+                <div class="diapo-encabezado">
+                    <h3>Paso 5: Carrusel "Conoce el Salón"</h3>
+                    <p>Sube una foto desde tu computador o celular (o pega una ruta) y mira al instante cómo encajará en el carrusel.</p>
+                </div>
+
+                <div class="admin-editor-grid">
+                    <form id="form-nueva-foto-carrusel" class="formulario-reserva" style="margin: 0; padding: 0; box-shadow: none;">
+                        <label for="carrusel-archivo">Subir foto desde tu dispositivo</label>
+                        <input type="file" id="carrusel-archivo" accept="image/*">
+
+                        <label for="carrusel-url">O pegar ruta local / enlace web (opcional)</label>
+                        <input type="text" id="carrusel-url" placeholder="imagenes/salon-01.jpg o https://...">
+
+                        <label for="carrusel-desc">Descripción breve de la foto</label>
+                        <input type="text" id="carrusel-desc" required placeholder="Ej: Mesa principal bajo las flores colgantes">
+
+                        <div class="acciones-form-admin">
+                            <button type="submit" id="btn-submit-carrusel" class="boton-primario">Agregar al Carrusel</button>
+                        </div>
+                    </form>
+
+                    <!-- Vista Previa en Vivo -->
+                    <div class="caja-vista-previa">
+                        <span class="etiqueta-previa">Vista previa en el carrusel</span>
+                        <div class="previa-carrusel-marco">
+                            <img id="prev-carrusel-img" src="imagenes/logo.jpg" alt="Vista previa del salón">
+                        </div>
+                        <p id="prev-carrusel-desc" class="previa-nota">Aquí verás el encuadre de tu foto en el carrusel del salón.</p>
+                    </div>
+                </div>
+
+                <div class="admin-lista-bloque">
+                    <h4>Fotos actuales en el carrusel</h4>
+                    <div id="lista-admin-carrusel" class="grid-miniaturas-admin"></div>
+                </div>
+            </div>
+
+            <!-- Controles Anterior / Siguiente -->
+            <div class="diapo-controles-pie">
+                <button type="button" id="diapo-prev" class="boton-libro">← Diapositiva anterior</button>
+                <span id="diapo-indicador" class="indicador-pagina">Diapositiva 1 de 4</span>
+                <button type="button" id="diapo-next" class="boton-libro">Siguiente diapositiva →</button>
             </div>
         </section>
     </main>
@@ -113,323 +295,6 @@
     <div class="notificacion-flotante" id="notificacion" role="status" aria-live="polite"></div>
 
     <script src="conexion.js"></script>
-    <script>
-        (function () {
-            'use strict';
-
-            const seccionLogin = document.getElementById('seccion-login');
-            const seccionPanel = document.getElementById('seccion-panel');
-            const seccionBuzon = document.getElementById('seccion-buzon');
-            const btnCerrar = document.getElementById('btn-cerrar-sesion');
-            const errorLogin = document.getElementById('error-login');
-
-            // Fecha en formato colombiano: 24/11/2026, 3:40 p. m.
-            function fechaBonita(valor) {
-                if (!valor) return '';
-                return new Date(valor).toLocaleString('es-CO', {
-                    day: '2-digit', month: '2-digit', year: 'numeric',
-                    hour: '2-digit', minute: '2-digit'
-                });
-            }
-
-            function notificar(texto) {
-                const n = document.getElementById('notificacion');
-                n.textContent = texto;
-                n.classList.add('visible');
-                setTimeout(function () { n.classList.remove('visible'); }, 3000);
-            }
-
-            // Cargar listas en el panel para poder borrar elementos si el dueño quiere
-            async function cargarListasAdmin() {
-                const listaProd = document.getElementById('lista-admin-productos');
-                const listaAct = document.getElementById('lista-admin-actividades');
-                listaProd.textContent = '';
-                listaAct.textContent = '';
-
-                const { data: prods } = await clienteSupabase.from('productos').select('*').order('id');
-                if (prods) {
-                    prods.forEach(function (p) {
-                        const li = document.createElement('li');
-                        const span = document.createElement('span');
-                        span.textContent = p.nombre + ' ($' + Number(p.precio).toLocaleString('es-CO') + ')';
-                        const btn = document.createElement('button');
-                        btn.textContent = 'Eliminar';
-                        btn.className = 'etiqueta-sitio';
-                        btn.style.cursor = 'pointer';
-                        btn.style.border = 'none';
-                        btn.onclick = async function () {
-                            await clienteSupabase.from('productos').delete().eq('id', p.id);
-                            notificar('Producto eliminado');
-                            cargarListasAdmin();
-                        };
-                        li.appendChild(span);
-                        li.appendChild(btn);
-                        listaProd.appendChild(li);
-                    });
-                }
-
-                const { data: acts } = await clienteSupabase.from('actividades').select('*').order('id');
-                if (acts) {
-                    acts.forEach(function (a) {
-                        const li = document.createElement('li');
-                        const span = document.createElement('span');
-                        span.textContent = a.titulo + ' (' + a.horario + ')';
-                        const btn = document.createElement('button');
-                        btn.textContent = 'Eliminar';
-                        btn.className = 'etiqueta-sitio';
-                        btn.style.cursor = 'pointer';
-                        btn.style.border = 'none';
-                        btn.onclick = async function () {
-                            await clienteSupabase.from('actividades').delete().eq('id', a.id);
-                            notificar('Actividad eliminada');
-                            cargarListasAdmin();
-                        };
-                        li.appendChild(span);
-                        li.appendChild(btn);
-                        listaAct.appendChild(li);
-                    });
-                }
-            }
-
-            // ====================================================
-            //  BUZÓN: PQRS Y POSTULACIONES
-            //
-            //  Todo lo que viene de estas dos tablas lo escribió una
-            //  persona desconocida desde internet, así que se pinta
-            //  SIEMPRE con textContent y nunca con innerHTML: si
-            //  alguien manda <script> en el mensaje de una queja, con
-            //  textContent se ve como texto y con innerHTML se
-            //  ejecutaría dentro del panel de admin.
-            // ====================================================
-
-            // Una fila plegable. El resumen se ve siempre; el detalle
-            // sólo cuando el admin hace clic.
-            function filaPlegable(titulo, subtitulo) {
-                const caja = document.createElement('details');
-                caja.className = 'tarjeta-solicitud';
-                const resumen = document.createElement('summary');
-
-                const fuerte = document.createElement('strong');
-                fuerte.textContent = titulo;
-                resumen.appendChild(fuerte);
-
-                const menor = document.createElement('span');
-                menor.className = 'solicitud-meta';
-                menor.textContent = subtitulo;
-                resumen.appendChild(menor);
-
-                caja.appendChild(resumen);
-                return caja;
-            }
-
-            function lineaDato(etiqueta, valor) {
-                const p = document.createElement('p');
-                const b = document.createElement('strong');
-                b.textContent = etiqueta + ': ';
-                p.appendChild(b);
-                p.appendChild(document.createTextNode(valor || '—'));
-                return p;
-            }
-
-            async function cargarPQRS() {
-                const contenedor = document.getElementById('lista-admin-pqrs');
-                const contador = document.getElementById('contador-pqrs');
-                contenedor.textContent = '';
-
-                const { data, error } = await clienteSupabase
-                    .from('pqrs')
-                    .select('*')
-                    .order('creado_en', { ascending: false });
-
-                if (error) {
-                    contador.textContent = 'No se pudo cargar. ¿Ya corriste el script SQL en Supabase?';
-                    return;
-                }
-                if (!data || data.length === 0) {
-                    contador.textContent = 'Todavía no hay solicitudes.';
-                    return;
-                }
-
-                const pendientes = data.filter(function (s) { return s.estado === 'Recibida'; }).length;
-                contador.textContent = data.length + ' en total · ' + pendientes + ' sin atender';
-
-                data.forEach(function (s) {
-                    const caja = filaPlegable(
-                        s.tipo + ' — ' + s.nombre,
-                        s.radicado + ' · ' + fechaBonita(s.creado_en) +
-                        (s.estado === 'Recibida' ? ' · SIN ATENDER' : ' · Atendida')
-                    );
-
-                    caja.appendChild(lineaDato('Correo', s.correo));
-                    caja.appendChild(lineaDato('Teléfono', s.telefono));
-
-                    const mensaje = document.createElement('p');
-                    mensaje.className = 'solicitud-mensaje';
-                    mensaje.textContent = s.mensaje;
-                    caja.appendChild(mensaje);
-
-                    if (s.estado === 'Recibida') {
-                        const btn = document.createElement('button');
-                        btn.textContent = 'Marcar como atendida';
-                        btn.className = 'etiqueta-sitio';
-                        btn.style.cursor = 'pointer';
-                        btn.style.border = 'none';
-                        btn.onclick = async function () {
-                            btn.disabled = true;
-                            const { error: err } = await clienteSupabase
-                                .from('pqrs')
-                                .update({ estado: 'Atendida' })
-                                .eq('id', s.id);
-                            if (err) {
-                                btn.disabled = false;
-                                notificar('No se pudo actualizar');
-                                return;
-                            }
-                            notificar('PQRS ' + s.radicado + ' marcada como atendida');
-                            cargarPQRS();
-                        };
-                        caja.appendChild(btn);
-                    }
-
-                    contenedor.appendChild(caja);
-                });
-            }
-
-            async function cargarPostulaciones() {
-                const contenedor = document.getElementById('lista-admin-postulaciones');
-                const contador = document.getElementById('contador-postulaciones');
-                contenedor.textContent = '';
-
-                const { data, error } = await clienteSupabase
-                    .from('postulaciones')
-                    .select('*')
-                    .order('creado_en', { ascending: false });
-
-                if (error) {
-                    contador.textContent = 'No se pudo cargar. ¿Ya corriste el script SQL en Supabase?';
-                    return;
-                }
-                if (!data || data.length === 0) {
-                    contador.textContent = 'Todavía no hay postulaciones.';
-                    return;
-                }
-
-                contador.textContent = data.length + ' postulación(es)';
-
-                data.forEach(function (p) {
-                    const caja = filaPlegable(
-                        p.nombre + ' — ' + p.cargo,
-                        fechaBonita(p.creado_en)
-                    );
-
-                    caja.appendChild(lineaDato('Correo', p.correo));
-                    caja.appendChild(lineaDato('Teléfono', p.telefono));
-
-                    if (p.mensaje) {
-                        const mensaje = document.createElement('p');
-                        mensaje.className = 'solicitud-mensaje';
-                        mensaje.textContent = p.mensaje;
-                        caja.appendChild(mensaje);
-                    }
-
-                    if (p.archivo_ruta) {
-                        // El bucket es privado, así que no hay un enlace fijo.
-                        // Se pide uno firmado que sirve 60 segundos y se abre
-                        // de una vez. Así la hoja de vida no queda expuesta
-                        // en una URL que cualquiera pueda reenviar.
-                        const btn = document.createElement('button');
-                        btn.textContent = 'Abrir hoja de vida';
-                        btn.className = 'etiqueta-sitio';
-                        btn.style.cursor = 'pointer';
-                        btn.style.border = 'none';
-                        btn.onclick = async function () {
-                            btn.disabled = true;
-                            const { data: firmado, error: errFirma } = await clienteSupabase
-                                .storage
-                                .from('hojas-de-vida')
-                                .createSignedUrl(p.archivo_ruta, 60);
-                            btn.disabled = false;
-
-                            if (errFirma || !firmado) {
-                                notificar('No se pudo abrir el archivo');
-                                return;
-                            }
-                            window.open(firmado.signedUrl, '_blank', 'noopener');
-                        };
-                        caja.appendChild(btn);
-
-                        const nombreArchivo = document.createElement('span');
-                        nombreArchivo.className = 'solicitud-meta';
-                        nombreArchivo.textContent = ' ' + (p.archivo_nombre || '');
-                        caja.appendChild(nombreArchivo);
-                    }
-
-                    contenedor.appendChild(caja);
-                });
-            }
-
-            // Login con Supabase
-            document.getElementById('form-login-admin').addEventListener('submit', async function (e) {
-                e.preventDefault();
-                errorLogin.textContent = '';
-                const email = document.getElementById('email-admin').value;
-                const password = document.getElementById('password-admin').value;
-
-                const { error } = await clienteSupabase.auth.signInWithPassword({ email, password });
-                if (error) {
-                    errorLogin.textContent = 'Correo o contraseña incorrectos.';
-                } else {
-                    seccionLogin.style.display = 'none';
-                    seccionPanel.style.display = 'block';
-                    seccionBuzon.style.display = 'block';
-                    btnCerrar.style.display = 'inline';
-                    cargarListasAdmin();
-                    cargarPQRS();
-                    cargarPostulaciones();
-                }
-            });
-
-            // Guardar Producto
-            document.getElementById('form-nuevo-producto').addEventListener('submit', async function (e) {
-                e.preventDefault();
-                const nuevo = {
-                    nombre: document.getElementById('prod-nombre').value,
-                    descripcion: document.getElementById('prod-desc').value,
-                    precio: parseInt(document.getElementById('prod-precio').value, 10),
-                    imagen_url: document.getElementById('prod-img').value
-                };
-                const { error } = await clienteSupabase.from('productos').insert([nuevo]);
-                if (!error) {
-                    notificar('¡Producto guardado en Supabase!');
-                    e.target.reset();
-                    cargarListasAdmin();
-                }
-            });
-
-            // Guardar Actividad
-            document.getElementById('form-nueva-actividad').addEventListener('submit', async function (e) {
-                e.preventDefault();
-                const nueva = {
-                    titulo: document.getElementById('act-titulo').value,
-                    horario: document.getElementById('act-horario').value,
-                    descripcion: document.getElementById('act-desc').value,
-                    imagen_url: document.getElementById('act-img').value
-                };
-                const { error } = await clienteSupabase.from('actividades').insert([nueva]);
-                if (!error) {
-                    notificar('¡Actividad guardada en Supabase!');
-                    e.target.reset();
-                    cargarListasAdmin();
-                }
-            });
-
-            // Cerrar sesión
-            btnCerrar.addEventListener('click', async function (e) {
-                e.preventDefault();
-                await clienteSupabase.auth.signOut();
-                location.reload();
-            });
-        })();
-    </script>
+    <script src="admin.js"></script>
 </body>
 </html>
